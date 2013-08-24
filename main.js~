@@ -76,7 +76,7 @@ function loop() {
 		$('#play_button').text('Play');
 		//$('#play_button').removeAttr('disabled');
 	} else {
-		$('#play_button').text(timer);
+		$('#play_button').text(Math.round(timer));
 		//$('#play_button').attr('disabled',true);
 	}
 	

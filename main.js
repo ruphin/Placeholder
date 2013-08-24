@@ -117,6 +117,9 @@ function handle_input(delta) {
 	}
 	
 	if(mouse.left) {
+		if(timer > 0.0) {
+			return;
+		}
 		var world_coords = vec2_clone(mouse.position);
 		
 		vec2_sub(world_coords, camera);
