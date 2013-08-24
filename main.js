@@ -17,7 +17,7 @@ function init() {
 			};
 	})();
 	
-	document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
+	//document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
 	
 	init_eventhandlers();
 	
@@ -89,12 +89,12 @@ function update(delta) {
 
 function render(canvas, camera) {
 	// Resize canvas
-	/*
-	if(canvas.width != window.innerWidth || canvas.height != window.innerHeight) {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
+	var context = document.getElementById('context');
+	if(canvas.width !=  context.offsetWidth || canvas.height != context.offsetHeight) {
+		canvas.width = context.offsetWidth;
+		canvas.height = context.offsetHeight;
 	}
-	*/
+	
 
 	// Get context
 	var ctx = canvas.getContext('2d');
