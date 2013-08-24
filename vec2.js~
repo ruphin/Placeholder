@@ -5,8 +5,9 @@ function vec2(x, y) {
     };
 }
 
-function vec2_clone(v) {
-	return vec2(v.x, v.y)
+function vec2_copy(a, b) {
+	a.x = b.x;
+	a.y = b.y;
 }
 
 function vec2_set(v, x, y) {

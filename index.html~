@@ -11,7 +11,7 @@
 			}
 			
 			#context {
-				display: inline;
+				display: block;
 				position: relative;
 				margin: auto;
 				width: 800px;
@@ -20,6 +20,7 @@
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
 		<script type="application/javascript" src="entity.js"></script>
+		<script type="application/javascript" src="entities.js"></script>
         <script type"application/javascript" src="main.js"></script>
         <script type="application/javascript">
             $(document).ready(function() {
@@ -29,9 +30,10 @@
     </head>
     <body>
 		<div id="context">
-			<canvas id="canvas"></canvas>
+			<canvas id="canvas" width="800" height="600"></canvas>
 		</div>
 		<div id="menu">
+			<button type="button" onclick="play()" id="play_button">Play</button>
 		</div>
 	</body>
 </html>
