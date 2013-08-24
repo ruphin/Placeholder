@@ -69,15 +69,14 @@ function loop() {
 	var delta = (now - previous) / 1000;
 	previous = now;
 	
-	if(timer <= 0.0) delta = 0.0;
 	if(delta > 0.1) delta = 0.1;
 	
 	if(timer <= 0.0) {
 		$('#play_button').text('Play');
-		//$('#play_button').removeAttr('disabled');
+		$('#play_button').removeAttr('disabled');
 	} else {
 		$('#play_button').text(Math.round(timer));
-		//$('#play_button').attr('disabled',true);
+		$('#play_button').attr('disabled',true);
 	}
 	
 	handle_input(delta);
@@ -116,7 +115,7 @@ function handle_input(delta) {
 		play();
 	}
 	
-	if(mouse.left) {
+	if(mouse.left && timer <= 0.0) {
 		var world_coords = vec2_clone(mouse.position);
 		
 		vec2_sub(world_coords, camera);
@@ -228,7 +227,6 @@ function render(canvas, camera) {
 		canvas.height = context.offsetHeight;
 	}
 	
-
 	// Get context
 	var ctx = canvas.getContext('2d');
 
@@ -272,6 +270,7 @@ function render(canvas, camera) {
 			ctx.restore()
 		});
 		
+		// Draw lasers
 		each_entity('tower', function(e) {
 			if(e.target) {
 				ctx.lineWidth = 0.1;
