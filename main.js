@@ -6,6 +6,9 @@ var mouse = { position: vec2(0.0, 0.0), delta: vec2(0.0, 0.0), left: false, righ
 var camera = vec2(0.0, 0.0)
 
 var timer = 0
+var build_mode = false
+
+var WORLD_SIZE = 40
 
 function init() {
 	canvas = $('#canvas')[0];
@@ -23,15 +26,17 @@ function init() {
 	
 	init_eventhandlers();
 	
-	spawn_enemies(100)
-	
 	loop();
 }
 
 function spawn_enemies(count) {
 	for(i = 0; i < count; i++) {
-		spawn_enemy(vec2(Math.random() * 100, Math.random() * 100))
+		spawn_enemy(vec2(Math.random() * WORLD_SIZE, Math.random() * WORLD_SIZE))
 	}
+}
+
+function spawn_random_portal() {
+	spawn_portal(vec2(Math.random() * WORLD_SIZE, Math.random() * WORLD_SIZE))
 }
 
 function init_eventhandlers() {
@@ -72,15 +77,23 @@ function loop() {
 	if(delta > 0.1) delta = 0.1;
 	
 	if(timer <= 0.0) {
+		if(!build_mode) {
+			spawn_random_portal()
+		
+			build_mode = true
+		}
+	
+		
 		$('#play_button').val('Play');
 		$('#play_button').removeAttr('disabled');
 	} else {
+		build_mode = false
 		$('#play_button').val(Math.round(timer));
 		$('#play_button').attr('disabled',true);
 	}
 	
 	handle_input(delta);
-	if(timer > 0.0) {
+	if(!build_mode) {
 		update(delta);
 	}
 	render(canvas, camera);
@@ -90,6 +103,7 @@ function loop() {
 
 function play() {
 	if(timer <= 0.0) {
+		build_mode = false;
 		timer = 10.0;
 	}
 }
@@ -115,7 +129,7 @@ function handle_input(delta) {
 		play();
 	}
 	
-	if(mouse.left && timer <= 0.0) {
+	if(mouse.left && build_mode) {
 		var world_coords = vec2_clone(mouse.position);
 		
 		vec2_sub(world_coords, camera);
@@ -179,23 +193,30 @@ function update(delta) {
 	});
 	
 	each_entity('tower', function(t) {
-		if(t.target == null || t.target.dead || 
-		   vec2_distance_squared(t.position, t.target.position) > t.range * t.range) {
-		    var targets = []
+		//if(t.target == null || t.target.dead || 
+		//   vec2_distance_squared(t.position, t.target.position) > t.range * t.range) {
+		    var score = 0.0
+		    t.target = undefined
 		   
 			// Find target
-			each_entity('enemy', function(e) {
+			each_entity('targettable_by_towers', function(e) {
 				if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
-					targets.push(e)
+					var s = vec2_distance_squared(e.position, t.position)
+					if(s > score) {
+						score = s
+						t.target = e
+					}
 				}
 			});
 			
+			/*
 			if(targets.length > 0) {
 				t.target = random_element(targets)
 			} else {
 				t.target = undefined
 			}
-		}
+			*/
+		//}
 		
 		if(t.target) {
 			if(t.cooldown <= 0) {
@@ -204,6 +225,14 @@ function update(delta) {
 			} else {
 				t.cooldown -= delta
 			}
+		}
+	});
+	
+	each_entity('portal', function(e) {
+		e.cooldown -= delta;
+		if(e.cooldown < 0.0) {
+			e.cooldown = e.rate;
+			spawn_enemy(vec2_clone(e.position))
 		}
 	});
 	
@@ -240,15 +269,15 @@ function render(canvas, camera) {
 	
 		// Draw world grid
 		ctx.lineWidth = 0.05;
-		for(i = 0; i < 101; i++) {
+		for(i = 0; i <= WORLD_SIZE; i++) {
 			ctx.beginPath();
 				ctx.moveTo(0, i);
-				ctx.lineTo(100, i);
+				ctx.lineTo(WORLD_SIZE, i);
 			ctx.stroke();
 			
 			ctx.beginPath();
 				ctx.moveTo(i, 0);
-				ctx.lineTo(i, 100);
+				ctx.lineTo(i, WORLD_SIZE);
 			ctx.stroke();
 		}
 		
