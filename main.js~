@@ -83,6 +83,10 @@ function update(delta) {
 	if(down[40]) {
 		camera.y -= delta * 1024;
 	}
+
+	if(mouse.left) {
+		vec2_add(camera, mouse.delta)
+	}
 	
 	vec2_set(mouse.delta, 0, 0);
 }
