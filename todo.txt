@@ -5,3 +5,5 @@
 - click on mini map
 
 - ALLES BALANCEN
+- Improve GUI
+- Better game over screen

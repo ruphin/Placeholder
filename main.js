@@ -168,7 +168,7 @@ function loop() {
 		}
 	}
 
-	render(canvas, camera);
+	render(canvas, camera, delta);
 	requestAnimFrame(loop);
 }
 
@@ -396,7 +396,7 @@ function update(delta) {
 		// Find target
 		each_entity('targettable_by_towers', function(e) {
 			if(e != t) {
-				if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
+				if(vec2_distance(e.position, t.position) - t.size < t.range * t.range) {
 					var s = 100 / vec2_distance_squared(e.position, t.position)
 					if(indexed(e, 'portal')) {
 						s += 100
@@ -506,7 +506,7 @@ function update(delta) {
 	});
 }
 
-function render(canvas, camera) {
+function render(canvas, camera, delta) {
 	// Resize canvas
 	var context = document.getElementById('context');
 	if(canvas.width !=  context.offsetWidth || canvas.height != context.offsetHeight) {
@@ -545,7 +545,24 @@ function render(canvas, camera) {
 
 			// Draw texture / circle
 			if(e.texture) {
-				ctx.drawImage(e.texture, -e.size / 2, -e.size / 2, e.size, e.size);
+				if(e.frame != undefined) {
+					e.frametime += delta;
+					if(e.frametime > e.frametime_max) {
+						e.frame++;
+						if(e.frame == e.end_frame) {
+							e.frame = e.start_frame;
+						}
+						e.frametime = 0;
+					}
+					ctx.drawImage(e.texture, 
+						0, e.frame / e.frames * e.texture.height, e.texture.width, e.texture.height / e.frames,
+						-e.size / 2, -e.size / 2, e.size, e.size
+					);
+				} else {
+					ctx.drawImage(e.texture,
+						-e.size / 2, -e.size / 2, e.size, e.size
+					);
+				}
 			} else {
 				ctx.beginPath();
 					ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
