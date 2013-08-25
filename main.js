@@ -99,7 +99,6 @@ function loop() {
 			spawn_random_portal()
 
 			build_mode = true
-			money = money + 40
 		}
 
 		$('#play_button').val('Play');
@@ -350,7 +349,7 @@ function update(delta) {
 					var s = 100 / d
 					if(s > score) {
 						score = s
-						
+
 						if(!t.targetted) {
 							e.target = t
 						}
@@ -362,7 +361,7 @@ function update(delta) {
 		// Pull target
 		if(e.target) {
 			e.target.targetted = true
-		
+
 			var t = vec2_clone(e.position);
 			vec2_sub(t, e.target.position);
 

@@ -35,13 +35,13 @@ var corpse_proto = {
 function spawn_corpse(position) {
 	var e = create_entity()
 	copy(corpse_proto, e)
-	
+
 	e.position = position
-	
+
 	index(e, 'drawable')
 	index(e, 'collidable')
 	index(e, 'corpse')
-	
+
 	return e
 }
 
