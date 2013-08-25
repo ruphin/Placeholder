@@ -130,7 +130,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 18,
+	'range': 10,
 	'cost': 20
 }
 
