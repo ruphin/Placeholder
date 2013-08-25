@@ -88,8 +88,9 @@ function loop() {
 	var now = Date.now();
 	var delta = (now - previous) / 1000;
 	previous = now;
-  $('#money').html(money)
-  $('#score').html(total_score)
+	
+	$('#money').html(money)
+	$('#score').html(total_score)
 
 	if(delta > 0.1) delta = 0.1;
 
@@ -296,11 +297,13 @@ function update(delta) {
 
 		// Find target
 		each_entity('targettable_by_towers', function(e) {
-			if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
-				var s = 100 / vec2_distance_squared(e.position, t.position)
-				if(s > score) {
-					score = s
-					t.target = e
+			if(e != t) {
+				if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
+					var s = 100 / vec2_distance_squared(e.position, t.position)
+					if(s > score) {
+						score = s
+						t.target = e
+					}
 				}
 			}
 		});
