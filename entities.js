@@ -148,7 +148,7 @@ function spawn_beacon(position) {
 var portal_proto = {
 	'color': '#000000',
 	'texture': portalImage,
-	'size': 1.0,
+	'size': 2.0,
 	'health': 100,
 	'rate': 3,
 	'cooldown': 0,

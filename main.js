@@ -33,7 +33,7 @@ function init() {
 			};
 	})();
 
-	//document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
+	document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
 
 	init_eventhandlers();
 	new_game();
@@ -189,14 +189,18 @@ function handle_input(delta) {
 		play();
 	}
 
-	mouse.world = vec2_clone(mouse.position);
-	vec2_sub(mouse.world, camera);
-	vec2_mul(mouse.world, 1.0 / 40);
-
 	if(!mouse.left) {
 		mini_map_mode = false
 	}
 
+	if(mouse.right) {
+		camera.x -= mouse.delta.x;
+		camera.y -= mouse.delta.y;
+	}
+
+	mouse.world = vec2_clone(mouse.position);
+	vec2_sub(mouse.world, camera);
+	vec2_mul(mouse.world, 1.0 / 40);
 
 	if(mouse.over && mouse.left) {
 		if(mouse.position.x > 10 && mouse.position.x < 10 + WORLD_SIZE * 3
@@ -262,7 +266,7 @@ function draw_cursor(ctx, proto) {
 	if(!intersection) {
 		ctx.globalAlpha = 0.5;
 		if(proto.texture) {
-				ctx.drawImage(proto.texture, -0.5, -0.5, 1, 1);
+				ctx.drawImage(proto.texture, -proto.size / 2, -proto.size / 2, proto.size, proto.size);
 			} else {
 				ctx.beginPath();
 					ctx.arc(0, 0, proto.size * 0.5, 0, 2 * Math.PI, false);
@@ -527,7 +531,7 @@ function render(canvas, camera) {
 
 			// Draw texture / circle
 			if(e.texture) {
-				ctx.drawImage(e.texture, -0.5, -0.5, 1, 1);
+				ctx.drawImage(e.texture, -e.size / 2, -e.size / 2, e.size, e.size);
 			} else {
 				ctx.beginPath();
 					ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
@@ -539,10 +543,10 @@ function render(canvas, camera) {
 			ctx.lineWidth = 0.01;
 			if(e.health && e.health < e.maximum_health) {
 				ctx.beginPath();
-				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, e.health / e.maximum_health, 0.1)
+				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, e.health / e.maximum_health * e.size, 0.1)
 				ctx.fillStyle = '#ff0000';
 				ctx.fill();
-				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, 1.0, 0.1)
+				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, e.size, 0.1)
 				ctx.strokeStyle = '#000000';
 				ctx.stroke();
 			}
