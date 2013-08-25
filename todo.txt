@@ -1,4 +1,3 @@
 - speler moet range van tower kunnen instellen, tussen 1 en 10
 
-- graphics
 - ALLES BALANCEN
