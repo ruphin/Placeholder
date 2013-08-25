@@ -6,6 +6,7 @@ var mouse = { over: false, position: vec2(0.0, 0.0), world: vec2(0.0, 0.0), delt
 var camera = vec2(0.0, 0.0)
 
 var timer = 0
+var round = 0
 
 var build_mode = false
 
@@ -57,6 +58,7 @@ function new_game() {
 	camera = vec2(0.0, 0.0)
 
 	timer = 0
+	round = 0
 
 	build_mode = false
 
@@ -136,6 +138,7 @@ function loop() {
 	previous = now;
 
 	$('#money').html(money)
+	$('#round').html(round)
 	$('#score').html(total_score)
 
 	if(delta > 0.1) delta = 0.1;
@@ -143,6 +146,7 @@ function loop() {
 	if(timer <= 0.0) {
 		if(!build_mode) {
 			spawn_random_portal()
+			round++;
 
 			build_mode = true
 		}
@@ -373,7 +377,7 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed)
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.1, round))
 
 				vec2_add(e.position, t)
 			} else {
@@ -587,6 +591,9 @@ function render(canvas, camera, delta) {
 			if(build_mode && e.range) {
 				ctx.beginPath();
 				ctx.arc(0, 0, e.range, 0, 2 * Math.PI, false);
+				ctx.fillStyle = e.color;
+				ctx.globalAlpha = 0.05;
+				ctx.fill();
 				ctx.strokeStyle = e.color;
 				ctx.globalAlpha = 0.5;
 				ctx.stroke();
