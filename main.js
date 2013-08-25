@@ -114,7 +114,7 @@ function loop() {
 	var now = Date.now();
 	var delta = (now - previous) / 1000;
 	previous = now;
-	
+
 	$('#money').html(money)
 	$('#score').html(total_score)
 
@@ -477,29 +477,33 @@ function render(canvas, camera) {
 		// Draw drawables
 		each_entity('drawable', function(e) {
 			ctx.save()
-				ctx.translate(e.position.x, e.position.y)
+			ctx.translate(e.position.x, e.position.y)
+			ctx.beginPath();
+			if(e.lifetime) {
+				ctx.globalAlpha = e.lifetime / e.initial_lifetime
+			}
+			if(e.texture) {
+				ctx.drawImage(e.texture, -0.5, -0.5, 1, 1);
+			} else {
+				ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
+				ctx.fillStyle = e.color;
+			}
+			ctx.fill();
+
+			if(e.health) {
 				ctx.beginPath();
-					if(e.lifetime) {
-						ctx.globalAlpha = e.lifetime / e.initial_lifetime
-					}
-					ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
-					ctx.fillStyle = e.color;
+				//ctx.arc(0, 0, e.size * 0.4, 0, 2 * Math.PI * (e.health / e.maximum_health), false);
+				ctx.fillStyle = '#ff0000';
 				ctx.fill();
+			}
 
-				if(e.health) {
-					ctx.beginPath();
-						ctx.arc(0, 0, e.size * 0.4, 0, 2 * Math.PI * (e.health / e.maximum_health), false);
-						ctx.fillStyle = '#ff0000';
-					ctx.fill();
-				}
-
-				if(build_mode && e.range) {
-					ctx.beginPath();
-						ctx.arc(0, 0, e.range, 0, 2 * Math.PI, false);
-						ctx.strokeStyle = '#ff0000';
-						ctx.globalAlpha = 0.5;
-					ctx.stroke();
-				}
+			if(build_mode && e.range) {
+				ctx.beginPath();
+				ctx.arc(0, 0, e.range, 0, 2 * Math.PI, false);
+				ctx.strokeStyle = '#ff0000';
+				ctx.globalAlpha = 0.5;
+				ctx.stroke();
+			}
 			ctx.restore()
 		});
 
@@ -509,8 +513,8 @@ function render(canvas, camera) {
 			if(e.target) {
 				ctx.strokeStyle = '#ff0000';
 				ctx.beginPath();
-					ctx.moveTo(e.position.x, e.position.y);
-					ctx.lineTo(e.target.position.x, e.target.position.y);
+				ctx.moveTo(e.position.x, e.position.y);
+				ctx.lineTo(e.target.position.x, e.target.position.y);
 				ctx.stroke();
 			}
 		});
@@ -521,16 +525,16 @@ function render(canvas, camera) {
 			if(e.target) {
 				ctx.strokeStyle = '#ffff00';
 				ctx.beginPath();
-					ctx.moveTo(e.position.x, e.position.y);
-					ctx.lineTo(e.target.position.x, e.target.position.y);
+				ctx.moveTo(e.position.x, e.position.y);
+				ctx.lineTo(e.target.position.x, e.target.position.y);
 				ctx.stroke();
 			}
 		});
 
 		if(mouse.over && build_mode && on_mouse_draw) {
 			ctx.save()
-				ctx.translate(mouse.world.x, mouse.world.y)
-				on_mouse_draw(ctx)
+			ctx.translate(mouse.world.x, mouse.world.y)
+			on_mouse_draw(ctx)
 			ctx.restore()
 		}
 	ctx.restore();
