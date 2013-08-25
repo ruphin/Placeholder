@@ -130,7 +130,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 12,
+	'range': 13,
 	'cost': 20
 }
 
@@ -163,10 +163,10 @@ var portal_proto = {
 	'frametime': 0,
 	*/
 	'size': 3.0,
-	'health': 75,
+	'health': 65,
 	'rate': 3,
 	'cooldown': 0,
-	'maximum_health': 75
+	'maximum_health': 65
 }
 
 function spawn_portal(position) {

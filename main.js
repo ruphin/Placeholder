@@ -416,7 +416,7 @@ function update(delta) {
 		var beacon = undefined
 		var min_distance = beacon_proto.range + 1
 		each_entity('beacon', function(b) {
-			beacon_distance = vec2_distance_squared(e.position, b.position)
+			beacon_distance = vec2_distance_squared(e.position, b.position) - 5
 			if(beacon_distance < b.range * b.range) {
 				beacon = b;
 				min_distance = beacon_distance;
@@ -446,13 +446,13 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, round))
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.abs(round-10) + 1))
 
 				vec2_add(e.position, t)
 			} else {
 				// Fire on target
 				if(e.cooldown <= 0) {
-					e.target.health -= e.damage * Math.pow(1.2, round)
+					e.target.health -= e.damage * Math.pow(1.1, round)
 					e.cooldown = e.rate
 				} else {
 					e.cooldown -= delta
