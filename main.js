@@ -16,8 +16,6 @@ var money = 0
 var total_score = 0
 
 var WORLD_SIZE = 40
-var TOWER_COST = 10
-var HARVESTER_COST = 20
 
 function init() {
 	canvas = $('#canvas')[0];
@@ -199,8 +197,8 @@ function draw_cursor(ctx, proto) {
 			ctx.globalAlpha = 0.5;
 		ctx.fill();
 	}
-
-	if(proto.range) { 
+	console.log(proto.range)
+	if(proto.range) {
 		ctx.beginPath();
 			ctx.arc(0, 0, proto.range, 0, 2 * Math.PI, false);
 			ctx.strokeStyle = '#ff0000';
@@ -210,23 +208,29 @@ function draw_cursor(ctx, proto) {
 }
 
 function set_tower_mode() {
-	console.log('tower mode')
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, tower_proto)
 	}
 	on_mouse_click = function() {
-		build(spawn_tower, 10)
+		build(spawn_tower, tower_proto.cost)
 	}
 }
 
 function set_harvester_mode() {
-	console.log('harvester mode')
-
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, harvester_proto)
 	}
 	on_mouse_click = function() {
-		build(spawn_harvester, 20)
+		build(spawn_harvester, harvester_proto.cost)
+	}
+}
+
+function set_beacon_mode() {
+	on_mouse_draw = function(ctx) {
+		draw_cursor(ctx, beacon_proto)
+	}
+	on_mouse_click = function() {
+		build(spawn_beacon, beacon_proto.cost)
 	}
 }
 
