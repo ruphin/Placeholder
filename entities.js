@@ -96,7 +96,7 @@ var harvester_proto = {
 	'target': undefined,
 	'health': 10,
 	'maximum_health': 10,
-	'range': 4,
+	'range': 4.5,
 	'cost': 20,
 	'pull_speed': 1
 }
@@ -124,7 +124,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 7,
+	'range': 9,
 	'cost': 20
 }
 

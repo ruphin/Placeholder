@@ -16,12 +16,10 @@ var money = 60
 var total_score = 0
 
 var WORLD_SIZE = 40
-var tile1 = new Image();
-tile1.src = 'graphics/Tile1.png'
-var tile2 = new Image();
-tile2.src = 'graphics/Tile2.png'
-var tile3 = new Image();
-tile3.src = 'graphics/Tile3.png'
+var tile = new Image();
+tile.src = 'graphics/Tile.png'
+
+var mini_map_mode = false
 
 function init() {
 	canvas = $('#canvas')[0];
@@ -60,6 +58,8 @@ function new_game() {
 
 	money = 60
 	total_score = 0
+
+	mini_map_mode = false
 }
 
 function spawn_enemies(count) {
@@ -189,6 +189,33 @@ function handle_input(delta) {
 		play();
 	}
 
+	mouse.world = vec2_clone(mouse.position);
+	vec2_sub(mouse.world, camera);
+	vec2_mul(mouse.world, 1.0 / 40);
+
+	if(!mouse.left) {
+		mini_map_mode = false
+	}
+
+
+	if(mouse.over && mouse.left) {
+		if(mouse.position.x > 10 && mouse.position.x < 10 + WORLD_SIZE * 3
+		&& mouse.position.y > 10 && mouse.position.y < 10 + WORLD_SIZE * 3 || mini_map_mode) {
+			// Click on mini map
+			camera.x = mouse.position.x / 3 * -40 + canvas.width;
+			camera.y = mouse.position.y / 3 * -40 + canvas.height;
+
+			mini_map_mode = true
+		} else if(!mini_map_mode && build_mode) {
+			// Click on map
+			if(on_mouse_click) {
+				on_mouse_click();
+			}
+			mouse.left = false;
+		}
+	}
+
+
 	if(camera.x > 0) {
 		camera.x = 0
 	}
@@ -203,17 +230,6 @@ function handle_input(delta) {
 
 	if(camera.y < -WORLD_SIZE * 40 + canvas.height) {
 		camera.y = -WORLD_SIZE * 40 + canvas.height
-	}
-
-	mouse.world = vec2_clone(mouse.position);
-	vec2_sub(mouse.world, camera);
-	vec2_mul(mouse.world, 1.0 / 40);
-
-	if(mouse.over && mouse.left && build_mode) {
-		if(on_mouse_click) {
-			on_mouse_click();
-		}
-		mouse.left = false;
 	}
 
 	vec2_set(mouse.delta, 0, 0);
@@ -492,24 +508,18 @@ function render(canvas, camera) {
 		ctx.scale(40, 40);
 
 		// Draw world grid
-		ctx.lineWidth = 0.05;
-		for(i = 0; i <= WORLD_SIZE; i++) {
-			ctx.beginPath();
-				ctx.moveTo(0, i);
-				ctx.lineTo(WORLD_SIZE, i);
-			ctx.stroke();
-
-			ctx.beginPath();
-				ctx.moveTo(i, 0);
-				ctx.lineTo(i, WORLD_SIZE);
-			ctx.stroke();
-		}
+		ctx.drawImage(tile, 0, 0, 24, 14);
+		ctx.drawImage(tile, 24, 0, 24, 14);
+		ctx.drawImage(tile, 0, 14, 24, 14);
+		ctx.drawImage(tile, 24, 14, 24, 14);
+		ctx.drawImage(tile, 0, 28, 24, 14);
+		ctx.drawImage(tile, 24, 28, 24, 14);
 
 		// Draw drawables
 		each_entity('drawable', function(e) {
 			ctx.save()
 			ctx.translate(e.position.x, e.position.y)
-			
+
 			// Fade with lifetime
 			if(e.lifetime) {
 				ctx.globalAlpha = e.lifetime / e.initial_lifetime
@@ -618,7 +628,7 @@ function render(canvas, camera) {
 		ctx.rect(
 			-camera.x / 40,
 			-camera.y / 40,
-			canvas.width / 40, 
+			canvas.width / 40,
 			canvas.height / 40
 		);
 		ctx.stroke();
