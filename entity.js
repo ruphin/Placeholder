@@ -33,6 +33,12 @@ function destroy_entity(entity) {
 	delete entities[entity.id];
 }
 
+function destroy_all_entities() {
+	entities = {};
+	indices = {};
+	next_entity_id = 0;
+}
+
 function each_entity(component_name, f) {
 	var entities = get_entities(component_name);
 	for(var key in entities) {

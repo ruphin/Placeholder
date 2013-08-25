@@ -3,7 +3,6 @@
 
 - splash damage tower
 
-- Game-over als je geen structures meer hebt.
 - high-score list
 
 - graphics

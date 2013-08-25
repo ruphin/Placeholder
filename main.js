@@ -12,7 +12,7 @@ var build_mode = false
 var on_mouse_click = undefined
 var on_mouse_draw = undefined
 
-var money = 0
+var money = 40
 var total_score = 0
 
 var WORLD_SIZE = 40
@@ -32,8 +32,28 @@ function init() {
 	//document.oncontextmenu = document.body.oncontextmenu = function() { return false; };
 
 	init_eventhandlers();
-
+	new_game();
 	loop();
+}
+
+function new_game() {
+	$('#game_over').hide();
+
+	destroy_all_entities();
+
+	mouse = { over: false, position: vec2(0.0, 0.0), world: vec2(0.0, 0.0), delta: vec2(0.0, 0.0), left: false, right: false };
+
+	camera = vec2(0.0, 0.0)
+
+	timer = 0
+
+	build_mode = false
+
+	on_mouse_click = undefined
+	on_mouse_draw = undefined
+
+	money = 40
+	total_score = 0
 }
 
 function spawn_enemies(count) {
@@ -83,6 +103,12 @@ function init_eventhandlers() {
 	}, false);
 }
 
+function game_over() {
+	$('#game_over_score').html(total_score);
+	$('#game_over').show();
+
+}
+
 var previous = Date.now()
 function loop() {
 	var now = Date.now();
@@ -110,11 +136,19 @@ function loop() {
 	}
 
 	handle_input(delta);
-	if(!build_mode) {
-		update(delta);
-	}
-	render(canvas, camera);
 
+	if(!build_mode &&
+	   Object.keys(get_entities('tower')).length == 0 &&
+	   Object.keys(get_entities('harvester')).length == 0 &&
+	   Object.keys(get_entities('beacon')).length == 0) {
+		game_over();
+	} else {
+		if(!build_mode) {
+			update(delta);
+		}
+	}
+
+	render(canvas, camera);
 	requestAnimFrame(loop);
 }
 

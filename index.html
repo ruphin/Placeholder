@@ -49,6 +49,13 @@
 			#score {
 				margin-left: 5px;
 			}
+
+			#game_over {
+				display: none;
+				position: absolute;
+				font-size: 100px;
+				font-family: Arial;
+			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
 		<script type="application/javascript" src="entity.js"></script>
@@ -81,11 +88,17 @@
 	    		<input type="image" src="graphics/YellowTower.png" id="beacon_button" class="build_button" onclick="set_beacon_mode()" alt="Beacon" Title="Beacon"/>
 	    	</div>
 			<canvas id="canvas"></canvas>
+			<div id="game_over">
+				Game over<br />
+				Score: <span id="game_over_score">0</span><br />
+				<input type="button" value="New game" onclick="new_game()">
+			</div>
 			<div id="menu">
 				<input type="button" onclick="play()" id="play_button" value="Play"/>
 				<span>Money</span><span id="money"></span>
 				<span>Score</span><span id="score"></span>
 			</div>
+			
 		</div>
 	</body>
 </html>
