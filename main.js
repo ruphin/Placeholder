@@ -17,6 +17,7 @@ var money = STARTING_MONEY
 var total_score = 0
 
 var WORLD_SIZE = 40
+var ZOOM = 40
 var tile = new Image();
 tile.src = 'graphics/Tile.png'
 
@@ -77,13 +78,22 @@ function spawn_enemies(count) {
 	}
 }
 
-function spawn_random_portal() {;
+function spawn_random_portal() {
+	var position = vec2()
+	var max = 10;
+
 	do {
-		position = vec2(
+		vec2_set(position,
 			Math.random() * (WORLD_SIZE - 10) + 5,
 			Math.random() * (WORLD_SIZE - 10) + 5
 		)
-	} while(intersects(portal_proto, position));
+
+		max--;
+	} while(intersects(portal_proto, position) && max > 0);
+
+	if(max == 0) {
+		console.log("Too many iterations");
+	}
 
 	spawn_portal(position);
 }
@@ -204,6 +214,26 @@ function handle_input(delta) {
 		play();
 	}
 
+	if(down[189]) {
+		ZOOM *= 1.01
+		camera.x *= 1.01
+		camera.y *= 1.01
+	}
+
+	if(down[187]) {
+		ZOOM *= 0.99
+		camera.x *= 0.99
+		camera.y *= 0.99
+	}
+
+	if(canvas.width > WORLD_SIZE * ZOOM) {
+		ZOOM = canvas.width / WORLD_SIZE
+	}
+
+	if(canvas.height > WORLD_SIZE * ZOOM) {
+		ZOOM = canvas.height / WORLD_SIZE
+	}
+
 	if(!mouse.left) {
 		mini_map_mode = false
 	}
@@ -215,14 +245,14 @@ function handle_input(delta) {
 
 	mouse.world = vec2_clone(mouse.position);
 	vec2_sub(mouse.world, camera);
-	vec2_mul(mouse.world, 1.0 / 40);
+	vec2_mul(mouse.world, 1.0 / ZOOM);
 
 	if(mouse.over && mouse.left) {
 		if(mouse.position.x > 10 && mouse.position.x < 10 + WORLD_SIZE * 3
 		&& mouse.position.y > 10 && mouse.position.y < 10 + WORLD_SIZE * 3 || mini_map_mode) {
 			// Click on mini map
-			camera.x = mouse.position.x / 3 * -40 + canvas.width;
-			camera.y = mouse.position.y / 3 * -40 + canvas.height;
+			camera.x = mouse.position.x / 3 * -ZOOM + canvas.width;
+			camera.y = mouse.position.y / 3 * -ZOOM + canvas.height;
 
 			mini_map_mode = true
 		} else if(!mini_map_mode && build_mode) {
@@ -243,12 +273,12 @@ function handle_input(delta) {
 		camera.y = 0
 	}
 
-	if(camera.x < -WORLD_SIZE * 40 + canvas.width) {
-		camera.x = -WORLD_SIZE * 40 + canvas.width
+	if(camera.x < -WORLD_SIZE * ZOOM + canvas.width) {
+		camera.x = -WORLD_SIZE * ZOOM + canvas.width
 	}
 
-	if(camera.y < -WORLD_SIZE * 40 + canvas.height) {
-		camera.y = -WORLD_SIZE * 40 + canvas.height
+	if(camera.y < -WORLD_SIZE * ZOOM + canvas.height) {
+		camera.y = -WORLD_SIZE * ZOOM + canvas.height
 	}
 
 	vec2_set(mouse.delta, 0, 0);
@@ -273,7 +303,7 @@ function build(spawn_function, cost) {
 function intersects(proto, position) {
 	var intersection = false;
 	each_entity('collidable', function(e) {
-		if(vec2_distance(e.position, position) < proto.size * proto.size) {
+		if(vec2_distance(e.position, position) < e.size * 0.5 + proto.size * 0.5) {
 			intersection = true;
 		}
 	});
@@ -400,7 +430,7 @@ function update(delta) {
 		// Find target
 		each_entity('targettable_by_towers', function(e) {
 			if(e != t) {
-				if(vec2_distance(e.position, t.position) - e.size < t.range) {
+				if(vec2_distance(e.position, t.position) - e.size * 0.5 < t.range) {
 					var s = 100 / vec2_distance_squared(e.position, t.position)
 					if(indexed(e, 'portal')) {
 						s += 100
@@ -527,7 +557,7 @@ function render(canvas, camera, delta) {
 
 	ctx.save();
 		ctx.translate(camera.x, camera.y);
-		ctx.scale(40, 40);
+		ctx.scale(ZOOM, ZOOM);
 
 		// Draw world grid
 		ctx.drawImage(tile, 0, 0, 24, 14);
@@ -668,10 +698,10 @@ function render(canvas, camera, delta) {
 		ctx.beginPath();
 		ctx.strokeStyle='#aaaaaa';
 		ctx.rect(
-			-camera.x / 40,
-			-camera.y / 40,
-			canvas.width / 40,
-			canvas.height / 40
+			-camera.x / ZOOM,
+			-camera.y / ZOOM,
+			canvas.width / ZOOM,
+			canvas.height / ZOOM
 		);
 		ctx.stroke();
 
