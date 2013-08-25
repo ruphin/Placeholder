@@ -22,7 +22,7 @@ var enemy_proto = {
 	'frametime': 0,
 	'size': 1.0,
 	'target': undefined,
-	'movement_speed': 1.0,
+	'movement_speed': 2,
 	'damage': 1,
 	'cooldown': 0,
 	'rate': 1,
@@ -73,8 +73,8 @@ var tower_proto = {
 	'rate': 0.05,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 0.12,
-	'range': 3,
+	'damage': 0.11,
+	'range': 2.5,
 	'cost': 10
 }
 
