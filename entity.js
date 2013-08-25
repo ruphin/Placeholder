@@ -18,6 +18,10 @@ function index(entity, name) {
 	indices[name][entity.id] = entity;
 }
 
+function indexed(entity, name) {
+	return entity.id in indices[name];
+}
+
 function destroy_entity(entity) {
 	// Remove from index
 	for(var i in indices) {

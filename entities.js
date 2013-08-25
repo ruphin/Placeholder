@@ -2,7 +2,7 @@ var enemy_proto = {
 	'color': '#0000ff',
 	'size': 1.0,
 	'target': undefined,
-	'movement_speed': 1.0,
+	'movement_speed': 3.0,
 	'damage': 1,
 	'cooldown': 0,
 	'rate': 1,
@@ -21,6 +21,23 @@ function spawn_enemy(position) {
 	index(e, 'enemy')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
+	
+	return e
+}
+
+var corpse_proto = {
+	'color': '#000000',
+	'size': 1.0,
+}
+
+function spawn_corpse(position) {
+	var e = create_entity()
+	copy(corpse_proto, e)
+	
+	e.position = position
+	
+	index(e, 'drawable')
+	index(e, 'collidable')
 	
 	return e
 }

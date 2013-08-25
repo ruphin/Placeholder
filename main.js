@@ -311,9 +311,9 @@ function update(delta) {
 	each_entity('health', function(t) {
 		if(t.health <= 0) {
 			t.dead = true;
-      if(t.id in indices['enemy']) {
-        total_score = total_score + 1
-      }
+			if(indexed(t, 'enemy')) {
+				total_score = total_score + 1
+			}
 			index(t, 'destroy')
 		}
 	});
@@ -371,13 +371,21 @@ function render(canvas, camera) {
 						ctx.fillStyle = '#ff0000';
 					ctx.fill();
 				}
+
+				if(build_mode && e.range) {
+					ctx.beginPath();
+						ctx.arc(0, 0, e.range, 0, 2 * Math.PI, false);
+						ctx.strokeStyle = '#ff0000';
+						ctx.globalAlpha = 0.5;
+					ctx.stroke();
+				}
 			ctx.restore()
 		});
 
 		// Draw lasers
+		ctx.lineWidth = 0.1;
 		each_entity('tower', function(e) {
 			if(e.target) {
-				ctx.lineWidth = 0.1;
 				ctx.strokeStyle = '#ff0000';
 				ctx.beginPath();
 					ctx.moveTo(e.position.x, e.position.y);
@@ -386,7 +394,7 @@ function render(canvas, camera) {
 			}
 		});
 
-		if(mouse.over && on_mouse_draw) {
+		if(mouse.over && build_mode && on_mouse_draw) {
 			ctx.save()
 				ctx.translate(mouse.world.x, mouse.world.y)
 				on_mouse_draw(ctx)
