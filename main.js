@@ -527,7 +527,7 @@ function render(canvas, camera) {
 				ctx.globalAlpha = 0.5;
 				ctx.stroke();
 			}
-			ctx.restosre()
+			ctx.restore()
 		});
 
 		// Draw lasers
