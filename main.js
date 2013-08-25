@@ -491,9 +491,12 @@ function render(canvas, camera) {
 			ctx.save()
 			ctx.translate(e.position.x, e.position.y)
 			
+			// Fade with lifetime
 			if(e.lifetime) {
 				ctx.globalAlpha = e.lifetime / e.initial_lifetime
 			}
+
+			// Draw texture / circle
 			if(e.texture) {
 				ctx.drawImage(e.texture, -0.5, -0.5, 1, 1);
 			} else {
@@ -503,6 +506,7 @@ function render(canvas, camera) {
 				ctx.fill();
 			}
 
+			// Draw health bar
 			ctx.lineWidth = 0.01;
 			if(e.health && e.health < e.maximum_health) {
 				ctx.beginPath();
@@ -514,6 +518,7 @@ function render(canvas, camera) {
 				ctx.stroke();
 			}
 
+			// Draw range
 			ctx.lineWidth = 0.05;
 			if(build_mode && e.range) {
 				ctx.beginPath();
@@ -522,7 +527,7 @@ function render(canvas, camera) {
 				ctx.globalAlpha = 0.5;
 				ctx.stroke();
 			}
-			ctx.restore()
+			ctx.restosre()
 		});
 
 		// Draw lasers
@@ -549,6 +554,7 @@ function render(canvas, camera) {
 			}
 		});
 
+		// Draw mouse cursor
 		if(mouse.over && build_mode && on_mouse_draw) {
 			ctx.save()
 			ctx.translate(mouse.world.x, mouse.world.y)
