@@ -98,12 +98,12 @@ function spawn_harvester(position) {
 }
 
 var beacon_proto = {
-	'color': '#4169e1',
+	'color': '#fa8072',
 	'size': 1.0,
-	'health': 10,
-	'maximum_health': 10,
+	'health': 1,
+	'maximum_health': 1,
 	'range': 7,
-	'cost': 10
+	'cost': 20
 }
 
 function spawn_beacon(position) {

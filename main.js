@@ -249,6 +249,18 @@ function update(delta) {
 
 	// Update enemies
 	each_entity('enemy', function(e) {
+		var beacon = undefined
+		var min_distance = beacon_proto.range + 1
+		each_entity('beacon', function(b) {
+			beacon_distance = vec2_distance_squared(e.position, b.position)
+			if(beacon_distance < b.range * b.range) {
+				beacon = b;
+				min_distance = beacon_distance;
+			}
+		});
+		if(beacon) {
+			e.target = beacon;
+		}
 		// Find target
 		if(e.target == null || e.target.dead) {
 			e.target = random_element(towers);
