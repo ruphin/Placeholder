@@ -69,7 +69,10 @@ function spawn_enemies(count) {
 }
 
 function spawn_random_portal() {
-	spawn_portal(vec2(Math.random() * WORLD_SIZE, Math.random() * WORLD_SIZE))
+	spawn_portal(vec2(
+		Math.random() * (WORLD_SIZE - 10) + 5,
+		Math.random() * (WORLD_SIZE - 10) + 5
+	));
 }
 
 function init_eventhandlers() {
@@ -561,5 +564,66 @@ function render(canvas, camera) {
 			on_mouse_draw(ctx)
 			ctx.restore()
 		}
+	ctx.restore();
+
+	// Draw mini map
+	ctx.save();
+		ctx.translate(10, 10)
+		ctx.scale(2, 2)
+
+		// Draw background
+		ctx.beginPath();
+		ctx.rect(0, 0, WORLD_SIZE, WORLD_SIZE);
+		ctx.fillStyle='#ffffff';
+		ctx.fill();
+		ctx.strokeStyle='#000000';
+		ctx.stroke();
+
+		// Draw frame
+		ctx.lineWidth = 0.5
+		ctx.beginPath();
+		ctx.strokeStyle='#aaaaaa';
+		ctx.rect(
+			-camera.x / 40 - canvas.width / 80, 
+			-camera.y / 40 - canvas.height / 80, 
+			canvas.width / 40, 
+			canvas.height / 40
+		);
+		ctx.stroke();
+
+		each_entity('portal', function(e) {
+			ctx.beginPath();
+				ctx.rect(e.position.x, e.position.y, 1, 1)
+				ctx.fillStyle = '#ff0000';
+			ctx.fill();
+		});
+
+		each_entity('enemy', function(e) {
+			ctx.beginPath();
+				ctx.rect(e.position.x, e.position.y, 1, 1)
+				ctx.fillStyle = '#ffaa00';
+			ctx.fill();
+		});
+
+		each_entity('tower', function(e) {
+			ctx.beginPath();
+				ctx.rect(e.position.x, e.position.y, 1, 1)
+				ctx.fillStyle = '#000000';
+			ctx.fill();
+		});
+
+		each_entity('beacon', function(e) {
+			ctx.beginPath();
+				ctx.rect(e.position.x, e.position.y, 1, 1)
+				ctx.fillStyle = '#000000';
+			ctx.fill();
+		});
+
+		each_entity('harvester', function(e) {
+			ctx.beginPath();
+				ctx.rect(e.position.x, e.position.y, 1, 1)
+				ctx.fillStyle = '#000000';
+			ctx.fill();
+		});
 	ctx.restore();
 }
