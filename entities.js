@@ -5,7 +5,7 @@ harvesterImage.src = 'graphics/BlueTower.png';
 var beaconImage = new Image();
 beaconImage.src = 'graphics/YellowTower.png';
 var creepImage = new Image();
-creepImage.src = 'graphics/Creep1.png'
+creepImage.src = 'graphics/Creep.png'
 var deadCreepImage = new Image();
 deadCreepImage.src = 'graphics/DeadCreep.png'
 var portalImage = new Image();
@@ -14,6 +14,12 @@ portalImage.src = 'graphics/Portal1.png'
 var enemy_proto = {
 	'color': '#0000ff',
 	'texture': creepImage,
+	'frame': 0,
+	'frames': 4,
+	'start_frame': 0,
+	'end_frame': 3,
+	'frametime_max': 1 / 8,
+	'frametime': 0,
 	'size': 1.0,
 	'target': undefined,
 	'movement_speed': 3.0,

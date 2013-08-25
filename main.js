@@ -396,7 +396,7 @@ function update(delta) {
 		// Find target
 		each_entity('targettable_by_towers', function(e) {
 			if(e != t) {
-				if(vec2_distance(e.position, t.position) - t.size < t.range * t.range) {
+				if(vec2_distance(e.position, t.position) - e.size < t.range) {
 					var s = 100 / vec2_distance_squared(e.position, t.position)
 					if(indexed(e, 'portal')) {
 						s += 100
