@@ -18,6 +18,8 @@
 			   */
 			   -ms-user-select: none;
 			   user-select: none;
+			   background: black;
+			   color: white;
 			}
 
 			#title {
@@ -80,7 +82,7 @@
 			}
 
 			#canvas {
-				border: 10px solid black;
+				border: 10px solid white;
 			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
@@ -115,23 +117,23 @@
 		</div>
     	<div id="description">
     		<b>Game description</b><br>
-    		The goal of the game is to survive as long as possible. You can build structures during the build time. After pressing play the game will run for 10 seconds until the next build time.
-    		<br>
-    		<img src="graphics/Portal1.png"/>Portal <span class="stats">Health: 100</span><br>
+    		The goal of the game is to survive as long as possible. You can scroll over the map above using the arrow keys or by using the mini-map in the top left. You can build structures from the menu at the bottom right of the map during the build time. After pressing play the game will run for 10 seconds followed by the next build time.
+    		<br><br>
+    		<img src="graphics/Portal1.png"/> Portal <span class="stats">Health: 100</span><br>
     		Portals will randomly appear on the map and spawn creeps.
     		<br>
     		<br>
-    		<img src="graphics/Creep1.png"/>Creep <span class="stats">Health: 10</span><br>
+    		<img src="graphics/Creep1.png"/> Creep <span class="stats">Health: 10</span><br>
     		Creeps walk over the map and attack your nearest structures.
     		<br>
     		<br>
-    		<img src="graphics/OrangeTower.png"/>Tower <span class="stats">Health: 10 Cost: 10</span><br>
+    		<img src="graphics/OrangeTower.png"/> Tower <span class="stats">Health: 10&nbsp; Cost: 10</span><br>
     		Towers deals damage to an enemy nearby. However, it will target your own structures if they are in range and no creeps are within range.
     		<br><br>
-    		<img src="graphics/BlueTower.png"/>Harvester <span class="stats">Health: 10 Cost: 20</span><br>
+    		<img src="graphics/BlueTower.png"/> Harvester <span class="stats">Health: 10&nbsp; Cost: 20</span><br>
     		Harvesters pull in the dead bodies of creeps and process them for money. Note that dead creeps decay over time!
     		<br><br>
-    		<img src="graphics/YellowTower.png"/>Beacon <span class="stats">Health: 1 Cost: 20</span><br>
+    		<img src="graphics/YellowTower.png"/> Beacon <span class="stats">Health: 1&nbsp; Cost: 20</span><br>
     		The creeps are drawn by this structure when they are within its range. They do not have very much health though!
     		<br><br><br><br><br>
     	</div>
