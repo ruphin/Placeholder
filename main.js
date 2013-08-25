@@ -1,14 +1,17 @@
 var canvas
 
 var down = [];
-var mouse = { position: vec2(0.0, 0.0), delta: vec2(0.0, 0.0), left: false, right: false };
+var mouse = { over: false, position: vec2(0.0, 0.0), world: vec2(0.0, 0.0), delta: vec2(0.0, 0.0), left: false, right: false };
 
 var camera = vec2(0.0, 0.0)
 
 var timer = 0
+
 var build_mode = false
-var tower_mode = false
-var harvester_mode = false
+
+var on_mouse_click = undefined
+var on_mouse_draw = undefined
+
 var money = 0
 var total_score = 0
 
@@ -65,6 +68,10 @@ function init_eventhandlers() {
 		if(e.which == 3) mouse.right = false;
 	});
 
+	$(canvas).mouseleave(function(e) {
+
+	});
+
 	document.addEventListener("mousemove", function(e) {
         vec2_set(mouse.position, e.offsetX, e.offsetY)
 		vec2_set(mouse.delta,
@@ -89,9 +96,8 @@ function loop() {
 			spawn_random_portal()
 
 			build_mode = true
-      money = money + 40
+			money = money + 40
 		}
-
 
 		$('#play_button').val('Play');
 		$('#play_button').removeAttr('disabled');
@@ -118,19 +124,19 @@ function play() {
 }
 
 function handle_input(delta) {
-	if(down[37]) {
+	if(down[37] || down[65]) {
 		camera.x += delta * 1024;
 	}
 
-	if(down[38]) {
+	if(down[38] || down[87]) {
 		camera.y += delta * 1024;
 	}
 
-	if(down[39]) {
+	if(down[39] || down[68]) {
 		camera.x -= delta * 1024;
 	}
 
-	if(down[40]) {
+	if(down[40] || down[83]) {
 		camera.y -= delta * 1024;
 	}
 
@@ -138,45 +144,63 @@ function handle_input(delta) {
 		play();
 	}
 
-	if(mouse.left && build_mode && ((money >= TOWER_COST && tower_mode) || (money >= HARVESTER_COST && harvester_mode))) {
-		var world_coords = vec2_clone(mouse.position);
+	mouse.world = vec2_clone(mouse.position);
+	vec2_sub(mouse.world, camera);
+	vec2_mul(mouse.world, 1.0 / 40);
 
-		vec2_sub(world_coords, camera);
-		vec2_mul(world_coords, 1.0 / 40);
-
-		var intersection = false;
-		each_entity('collidable', function(e) {
-			if(vec2_distance(e.position, world_coords) < 1.0) {
-				intersection = true;
-			}
-		});
-
-		if(!intersection) {
-      if(tower_mode) {
-			  spawn_tower(world_coords);
-        money = money - TOWER_COST;
-      } else if(harvester_mode) {
-        spawn_harvester(world_coords);
-        money = money - HARVESTER_COST;
-      }
+	if(mouse.left && build_mode) {
+		if(on_mouse_click) {
+			on_mouse_click();
 		}
-
 		mouse.left = false;
 	}
 
 	vec2_set(mouse.delta, 0, 0);
 }
 
+function build(spawn_function, cost) {
+	if(money >= cost) {
+		var intersection = false;
+		each_entity('collidable', function(e) {
+			if(vec2_distance(e.position, mouse.world) < 1.0) {
+				intersection = true;
+			}
+		});
+
+		if(!intersection) {
+			spawn_function(mouse.world);
+			money -= cost;
+		}
+	}
+}
+
 function set_tower_mode() {
-  console.log('tower mode')
-  tower_mode = true
-  harvester_mode = false
+	console.log('tower mode')
+	on_mouse_draw = function(ctx) {
+		ctx.beginPath();
+			ctx.arc(0, 0, 0.5, 0, 2 * Math.PI, false);
+			ctx.fillStyle = '#00ff00';
+			ctx.globalAlpha = 0.5;
+		ctx.fill();
+	}
+	on_mouse_click = function() {
+		build(spawn_tower, 10)
+	}
 }
 
 function set_harvester_mode() {
-  console.log('harvester mode')
-  harvester_mode = true
-  tower_mode = false
+	console.log('harvester mode')
+
+	on_mouse_draw = function(ctx) {
+		ctx.beginPath();
+			ctx.arc(0, 0, 0.5, 0, 2 * Math.PI, false);
+			ctx.fillStyle = '#ffff00';
+			ctx.globalAlpha = 0.5;
+		ctx.fill();
+	}
+	on_mouse_click = function() {
+		build(spawn_harvester, 20)
+	}
 }
 
 function random_element(array) {
@@ -220,30 +244,19 @@ function update(delta) {
 	});
 
 	each_entity('tower', function(t) {
-		//if(t.target == null || t.target.dead ||
-		//   vec2_distance_squared(t.position, t.target.position) > t.range * t.range) {
-		    var score = 0.0
-		    t.target = undefined
+	    var score = 0.0
+	    t.target = undefined
 
-			// Find target
-			each_entity('targettable_by_towers', function(e) {
-				if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
-					var s = vec2_distance_squared(e.position, t.position)
-					if(s > score) {
-						score = s
-						t.target = e
-					}
+		// Find target
+		each_entity('targettable_by_towers', function(e) {
+			if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
+				var s = 100 / vec2_distance_squared(e.position, t.position)
+				if(s > score) {
+					score = s
+					t.target = e
 				}
-			});
-
-			/*
-			if(targets.length > 0) {
-				t.target = random_element(targets)
-			} else {
-				t.target = undefined
 			}
-			*/
-		//}
+		});
 
 		if(t.target) {
 			if(t.cooldown <= 0) {
@@ -340,5 +353,12 @@ function render(canvas, camera) {
 				ctx.stroke();
 			}
 		});
+
+		if(on_mouse_draw) {
+			ctx.save()
+				ctx.translate(mouse.world.x, mouse.world.y)
+				on_mouse_draw(ctx)
+			ctx.restore()
+		}
 	ctx.restore();
 }
