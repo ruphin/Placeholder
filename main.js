@@ -12,7 +12,7 @@ var build_mode = false
 var on_mouse_click = undefined
 var on_mouse_draw = undefined
 
-var money = 40
+var money = 60
 var total_score = 0
 
 var WORLD_SIZE = 40
@@ -52,7 +52,7 @@ function new_game() {
 	on_mouse_click = undefined
 	on_mouse_draw = undefined
 
-	money = 40
+	money = 60
 	total_score = 0
 }
 
@@ -333,6 +333,12 @@ function update(delta) {
 			if(e != t) {
 				if(vec2_distance_squared(e.position, t.position) < t.range * t.range) {
 					var s = 100 / vec2_distance_squared(e.position, t.position)
+					if(indexed(e, 'portal')) {
+						s += 100
+					}
+					if(indexed(e, 'enemy')) {
+						s += 200
+					}
 					if(s > score) {
 						score = s
 						t.target = e
@@ -407,7 +413,7 @@ function update(delta) {
 				vec2_add(e.target.position, t)
 			} else {
 				index(e.target, 'destroy')
-				money += 5
+				money += 8
 				e.target = undefined
 			}
 		}

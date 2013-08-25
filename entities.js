@@ -17,7 +17,7 @@ function spawn_enemy(position) {
 	e.position = position
 
 	index(e, 'drawable')
-	index(e, 'collidable')
+	//index(e, 'collidable')
 	index(e, 'enemy')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
@@ -68,8 +68,9 @@ function spawn_tower(position) {
 	index(e, 'collidable')
 	index(e, 'tower')
 	index(e, 'health')
-	index(e, 'targettable_by_towers')
 	index(e, 'targettable_by_enemies')
+	index(e, 'targettable_by_towers')
+
 
 	return e
 }
@@ -95,8 +96,9 @@ function spawn_harvester(position) {
 	index(e, 'collidable')
 	index(e, 'harvester')
 	index(e, 'health')
-	index(e, 'targettable_by_towers')
 	index(e, 'targettable_by_enemies')
+	index(e, 'targettable_by_towers')
+
 
 	return e
 }
@@ -120,8 +122,9 @@ function spawn_beacon(position) {
 	index(e, 'collidable')
 	index(e, 'beacon')
 	index(e, 'health')
-	index(e, 'targettable_by_towers')
 	index(e, 'targettable_by_enemies')
+	index(e, 'targettable_by_towers')
+
 
 	return e
 }
