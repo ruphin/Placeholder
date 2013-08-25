@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+    	<meta charset="UTF-8">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 		<style type="text/css">
 			html, body {
@@ -81,10 +82,16 @@
 			#game_over {
 				display: none;
 				position: absolute;
-				top: 150px;
+				top: 50px;
 				left: 150px;
 				font-size: 100px;
 				font-family: Arial;
+			}
+
+			#game_over input {
+				width: 100%;
+				height: 100px;
+				font-size: 50px;
 			}
 
 			#canvas {
@@ -107,13 +114,14 @@
 			<canvas id="canvas"></canvas>
 			<div id="game_over">
 				Game Over<br />
-				&nbsp; Score <span id="game_over_score">0</span><br />
+				&nbsp; Kills: <span id="game_over_score">0</span><br />
+				&nbsp; Round: <span id="game_over_round">0</span><br />
 				<input type="button" value="New game" onclick="new_game()">
 			</div>
 			<div id="menu">
 				<input type="button" onclick="play()" id="play_button" value="Play"/>
 				<span>Money</span><span id="money"></span>
-				<span>Score</span><span id="score"></span>
+				<span>Kills</span><span id="score"></span>
 				<span>Round</span><span id="round"></span>
 		    	<div id="build_menu">
 		    		<label for="tower_button">10$</label>

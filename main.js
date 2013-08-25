@@ -127,7 +127,7 @@ function init_eventhandlers() {
 	});
 
 	document.addEventListener("mousemove", function(e) {
-        vec2_set(mouse.position, e.offsetX, e.offsetY)
+        vec2_set(mouse.position, e.layerX || e.clientX, e.offsetY || e.layerY)
 		vec2_set(mouse.delta,
             e.movementX || e.mozMovementX || e.webkitMovementX || 0,
             e.movementY || e.mozMovementY || e.webkitMovementY || 0
@@ -137,6 +137,7 @@ function init_eventhandlers() {
 
 function game_over() {
 	$('#game_over_score').html(total_score);
+	$('#game_over_round').html(round);
 	$('#game_over').show();
 
 }
@@ -328,7 +329,6 @@ function draw_cursor(ctx, proto) {
 			ctx.globalAlpha = 0.5;
 		ctx.fill();
 	}
-	console.log(proto.range)
 	if(proto.range) {
 		ctx.beginPath();
 			ctx.arc(0, 0, proto.range, 0, 2 * Math.PI, false);
@@ -525,6 +525,7 @@ function update(delta) {
 			if(indexed(e, 'enemy')) {
 				spawn_corpse(e.position) // Note: reuses position instance
 				total_score = total_score + 1
+				money += 2
 			}
 			if(indexed(e, 'harvester')) {
 				if(e.target) {

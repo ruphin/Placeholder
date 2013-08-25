@@ -2,7 +2,6 @@
 - splash damage tower
 - healing tower
 - rounds as score
-- click on mini map
 
 - ALLES BALANCEN
 - Improve GUI
