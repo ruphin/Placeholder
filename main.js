@@ -23,6 +23,8 @@ tile.src = 'graphics/Tile.png'
 
 var mini_map_mode = false
 
+var undo = []
+
 window.addEventListener("keydown", function(e) {
     // space and arrow keys
     if([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
@@ -70,6 +72,9 @@ function new_game() {
 	total_score = 0
 
 	mini_map_mode = false
+
+	undo = [];
+	$('#undo_button').attr('disabled',true);
 }
 
 function spawn_enemies(count) {
@@ -96,6 +101,19 @@ function spawn_random_portal() {
 	}
 
 	spawn_portal(position);
+}
+
+function undo_build() {
+	if(undo.length > 0) {
+		var e = undo.pop();
+
+		destroy_entity(e);
+		money += e.cost;
+	}
+
+	if(undo.length == 0) {
+		$('#undo_button').attr('disabled',true);
+	}
 }
 
 function init_eventhandlers() {
@@ -168,6 +186,7 @@ function loop() {
 		build_mode = false
 		$('#play_button').val(Math.round(timer));
 		$('#play_button').attr('disabled',true);
+		$('#undo_button').attr('disabled',true);
 	}
 
 	handle_input(delta);
@@ -188,6 +207,8 @@ function loop() {
 }
 
 function play() {
+	undo = []
+
 	if(timer <= 0.0) {
 		build_mode = false;
 		timer = 10.0;
@@ -213,6 +234,23 @@ function handle_input(delta) {
 
 	if(down[80] || down[32]) {
 		play();
+	}
+
+	if(down[49]) {
+		set_tower_mode();
+	}
+
+	if(down[50]) {
+		set_harvester_mode();
+	}
+
+	if(down[51]) {
+		set_beacon_mode();
+	}
+
+	if(down[85]) {
+		undo_build();
+		down[85] = false;
 	}
 
 	if(down[189]) {
@@ -295,7 +333,8 @@ function build(spawn_function, cost) {
 		});
 
 		if(!intersection) {
-			spawn_function(mouse.world);
+			undo.push(spawn_function(mouse.world));
+			$('#undo_button').removeAttr('disabled');
 			money -= cost;
 		}
 	}

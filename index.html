@@ -97,6 +97,11 @@
 			#canvas {
 				border: 3px solid #ddd;
 			}
+
+			#undo_button {
+				width: 50px;
+				height: 50px;
+			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
 		<script type="application/javascript" src="entity.js"></script>
@@ -132,6 +137,8 @@
 		    		
 		    		<label for="beacon_button">20$</label>
 		    		<input type="image" src="graphics/YellowTower.png" id="beacon_button" class="build_button" onclick="set_beacon_mode()" alt="Beacon" Title="Beacon"/>
+
+		    		<input type="button" id="undo_button" onclick="undo_build()" value="Undo" />
 		    	</div>
 			</div>
 		</div>
