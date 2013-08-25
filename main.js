@@ -16,6 +16,12 @@ var money = 60
 var total_score = 0
 
 var WORLD_SIZE = 40
+var tile1 = new Image();
+tile1.src = 'graphics/Tile1.png'
+var tile2 = new Image();
+tile2.src = 'graphics/Tile2.png'
+var tile3 = new Image();
+tile3.src = 'graphics/Tile3.png'
 
 function init() {
 	canvas = $('#canvas')[0];
