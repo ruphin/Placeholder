@@ -2,6 +2,9 @@
 - dooie enemies worden corpses die x tijd (30 s) blijven
 - harvesters targetten een corpse en trekken die langzaam naar binnen. Ze geven x money op het moment dat ze binnengetrokken zijn en targetten een nieuwe corpse.
 - beacon structure met range x en enemies moeten die beacon aanvallen als ze binnen range komen.
+- towers targetten ook andere towers, beacons en harvesters, maar ze prioriteren enemies.
+- Game-over als je geen structures meer hebt.
+- high-score list
 
 - Readme, speluitleg schrijven
 - graphics
