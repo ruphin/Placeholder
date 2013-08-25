@@ -22,7 +22,7 @@ var enemy_proto = {
 	'frametime': 0,
 	'size': 1.0,
 	'target': undefined,
-	'movement_speed': 3.0,
+	'movement_speed': 1.0,
 	'damage': 1,
 	'cooldown': 0,
 	'rate': 1,

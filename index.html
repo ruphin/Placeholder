@@ -70,6 +70,11 @@
 
 			#score {
 				margin-left: 5px;
+				margin-right: 10px;
+			}
+
+			#round {
+				margin-left: 5px;
 			}
 
 			#game_over {
@@ -82,7 +87,7 @@
 			}
 
 			#canvas {
-				border: 10px solid white;
+				border: 3px solid #ddd;
 			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
@@ -108,9 +113,15 @@
 				<input type="button" onclick="play()" id="play_button" value="Play"/>
 				<span>Money</span><span id="money"></span>
 				<span>Score</span><span id="score"></span>
+				<span>Round</span><span id="round"></span>
 		    	<div id="build_menu">
+		    		<label for="tower_button">10$</label>
 		    		<input type="image" src="graphics/OrangeTower.png" id="tower_button" class="build_button" onclick="set_tower_mode()" alt="Tower" Title="Tower"/>
+		    		
+		    		<label for="harvester_button">20$</label>
 		    		<input type="image" src="graphics/BlueTower.png" id="harvester_button" class="build_button" onclick="set_harvester_mode()" alt="Harvester" Title="Harvester"/>
+		    		
+		    		<label for="beacon_button">20$</label>
 		    		<input type="image" src="graphics/YellowTower.png" id="beacon_button" class="build_button" onclick="set_beacon_mode()" alt="Beacon" Title="Beacon"/>
 		    	</div>
 			</div>
