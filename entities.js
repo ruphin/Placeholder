@@ -166,7 +166,7 @@ var portal_proto = {
 	'health': 150,
 	'rate': 3,
 	'cooldown': 0,
-	'maximum_health': 100
+	'maximum_health': 150
 }
 
 function spawn_portal(position) {
