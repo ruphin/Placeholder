@@ -189,6 +189,22 @@ function handle_input(delta) {
 		play();
 	}
 
+	if(camera.x > 0) {
+		camera.x = 0
+	}
+
+	if(camera.y > 0) {
+		camera.y = 0
+	}
+
+	if(camera.x < -WORLD_SIZE * 40 + canvas.width) {
+		camera.x = -WORLD_SIZE * 40 + canvas.width
+	}
+
+	if(camera.y < -WORLD_SIZE * 40 + canvas.height) {
+		camera.y = -WORLD_SIZE * 40 + canvas.height
+	}
+
 	mouse.world = vec2_clone(mouse.position);
 	vec2_sub(mouse.world, camera);
 	vec2_mul(mouse.world, 1.0 / 40);
@@ -569,7 +585,7 @@ function render(canvas, camera) {
 	// Draw mini map
 	ctx.save();
 		ctx.translate(10, 10)
-		ctx.scale(2, 2)
+		ctx.scale(3, 3)
 
 		// Draw background
 		ctx.beginPath();
@@ -584,8 +600,8 @@ function render(canvas, camera) {
 		ctx.beginPath();
 		ctx.strokeStyle='#aaaaaa';
 		ctx.rect(
-			-camera.x / 40 - canvas.width / 80, 
-			-camera.y / 40 - canvas.height / 80, 
+			-camera.x / 40,
+			-camera.y / 40,
 			canvas.width / 40, 
 			canvas.height / 40
 		);
