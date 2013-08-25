@@ -163,7 +163,7 @@ var portal_proto = {
 	'frametime': 0,
 	*/
 	'size': 3.0,
-	'health': 100,
+	'health': 150,
 	'rate': 3,
 	'cooldown': 0,
 	'maximum_health': 100

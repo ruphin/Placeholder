@@ -583,9 +583,9 @@ function update(delta) {
 function render(canvas, camera, delta) {
 	// Resize canvas
 	var context = document.getElementById('context');
-	if(canvas.width !=  context.offsetWidth || canvas.height != context.offsetHeight) {
-		canvas.width = context.offsetWidth;
-		canvas.height = context.offsetHeight;
+	if(canvas.width !=  context.offsetWidth-6 || canvas.height != context.offsetHeight-6) {
+		canvas.width = context.offsetWidth-6;
+		canvas.height = context.offsetHeight-6;
 	}
 
 	// Get context
@@ -628,7 +628,7 @@ function render(canvas, camera, delta) {
 						}
 						e.frametime = 0;
 					}
-					ctx.drawImage(e.texture, 
+					ctx.drawImage(e.texture,
 						0, e.frame / e.frames * e.texture.height, e.texture.width, e.texture.height / e.frames,
 						-e.size / 2, -e.size / 2, e.size, e.size
 					);
