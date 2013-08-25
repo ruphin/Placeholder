@@ -176,7 +176,7 @@ function handle_input(delta) {
 		camera.y -= delta * 1024;
 	}
 
-	if(down[80]) {
+	if(down[80] || down[32]) {
 		play();
 	}
 
@@ -275,12 +275,6 @@ function random_element(array) {
 function update(delta) {
 	timer -= delta;
 
-	// Make a list of towers
-	var targets = [];
-	each_entity('targettable_by_enemies', function(e) {
-		targets.push(e);
-	});
-
 	// Update enemies
 	each_entity('enemy', function(e) {
 		var beacon = undefined
@@ -295,9 +289,17 @@ function update(delta) {
 		if(beacon) {
 			e.target = beacon;
 		}
+
 		// Find target
+		var score = 999999999;
 		if(e.target == null || e.target.dead) {
-			e.target = random_element(targets);
+			each_entity('targettable_by_enemies', function(t) {
+				var s = vec2_distance_squared(e.position, t.position) + Math.random() * 5;
+				if(s < score) {
+					score = s
+					e.target = t
+				}
+			});
 		}
 
 		if(e.target != null) {
