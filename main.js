@@ -16,12 +16,8 @@ var money = 60
 var total_score = 0
 
 var WORLD_SIZE = 40
-var tile1 = new Image();
-tile1.src = 'graphics/Tile1.png'
-var tile2 = new Image();
-tile2.src = 'graphics/Tile2.png'
-var tile3 = new Image();
-tile3.src = 'graphics/Tile3.png'
+var tile = new Image();
+tile.src = 'graphics/Tile.png'
 
 function init() {
 	canvas = $('#canvas')[0];
@@ -492,24 +488,18 @@ function render(canvas, camera) {
 		ctx.scale(40, 40);
 
 		// Draw world grid
-		ctx.lineWidth = 0.05;
-		for(i = 0; i <= WORLD_SIZE; i++) {
-			ctx.beginPath();
-				ctx.moveTo(0, i);
-				ctx.lineTo(WORLD_SIZE, i);
-			ctx.stroke();
-
-			ctx.beginPath();
-				ctx.moveTo(i, 0);
-				ctx.lineTo(i, WORLD_SIZE);
-			ctx.stroke();
-		}
+		ctx.drawImage(tile, 0, 0, 24, 14);
+		ctx.drawImage(tile, 24, 0, 24, 14);
+		ctx.drawImage(tile, 0, 14, 24, 14);
+		ctx.drawImage(tile, 24, 14, 24, 14);
+		ctx.drawImage(tile, 0, 28, 24, 14);
+		ctx.drawImage(tile, 24, 28, 24, 14);
 
 		// Draw drawables
 		each_entity('drawable', function(e) {
 			ctx.save()
 			ctx.translate(e.position.x, e.position.y)
-			
+
 			// Fade with lifetime
 			if(e.lifetime) {
 				ctx.globalAlpha = e.lifetime / e.initial_lifetime
@@ -618,7 +608,7 @@ function render(canvas, camera) {
 		ctx.rect(
 			-camera.x / 40,
 			-camera.y / 40,
-			canvas.width / 40, 
+			canvas.width / 40,
 			canvas.height / 40
 		);
 		ctx.stroke();

@@ -1,9 +1,4 @@
 - speler moet range van tower kunnen instellen, tussen 1 en 10
-- towers targetten ook andere towers, beacons en harvesters, maar ze prioriteren enemies.
-
-- splash damage tower
-
-- high-score list
 
 - graphics
 - ALLES BALANCEN
