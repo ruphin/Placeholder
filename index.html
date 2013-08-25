@@ -8,6 +8,26 @@
 				height: 100%;
 				margin: 0;
 				padding: 0;
+			   -moz-user-select: -moz-none;
+			   -khtml-user-select: none;
+			   -webkit-user-select: none;
+
+			   /*
+			     Introduced in IE 10.
+			     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+			   */
+			   -ms-user-select: none;
+			   user-select: none;
+			}
+
+			#title {
+				display: block;
+				position: relative;
+				margin: auto;
+				font-size: 32pt;
+				font-weight: bold;
+				width: 800px;
+				height: 80px;
 			}
 
 			#context {
@@ -25,12 +45,12 @@
 			}
 
 			#description {
-				width: 300px;
-				position: absolute;
-				left: 20px;
-				top: 20px;
+				width: 800px;
+				position: relative;
+				top: 200px;
 				font-size: 16pt;
 				text-align: justify;
+				margin: auto;
 			}
 
 			#play_button {
@@ -74,6 +94,7 @@
         </script>
     </head>
     <body>
+    	<div id="title">Placeholder</div>
 		<div id="context">
 	    	<div id="build_menu">
 	    		<input type="image" src="graphics/OrangeTower.png" id="tower_button" class="build_button" onclick="set_tower_mode()" alt="Tower" Title="Tower"/>
@@ -93,7 +114,7 @@
 			</div>
 		</div>
     	<div id="description">
-    		<b>Placeholder</b><br>
+    		<b>Game description</b><br>
     		The goal of the game is to survive as long as possible. Portals will randomly appear on the map and spawn creeps. You can build structures during the build time, after pressing play the game will run for 10 seconds until the next build time. The structures you can build are:
     		<br><br>
     		<u>Tower</u> Cost: 10 Health: 10<br>
