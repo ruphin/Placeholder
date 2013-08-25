@@ -35,13 +35,13 @@ var corpse_proto = {
 function spawn_corpse(position) {
 	var e = create_entity()
 	copy(corpse_proto, e)
-	
+
 	e.position = position
-	
+
 	index(e, 'drawable')
 	index(e, 'collidable')
 	index(e, 'corpse')
-	
+
 	return e
 }
 
@@ -68,6 +68,7 @@ function spawn_tower(position) {
 	index(e, 'collidable')
 	index(e, 'tower')
 	index(e, 'health')
+	index(e, 'targettable_by_towers')
 
 	return e
 }
@@ -93,6 +94,7 @@ function spawn_harvester(position) {
 	index(e, 'collidable')
 	index(e, 'harvester')
 	index(e, 'health')
+	index(e, 'targettable_by_towers')
 
 	return e
 }
@@ -116,6 +118,7 @@ function spawn_beacon(position) {
 	index(e, 'collidable')
 	index(e, 'beacon')
 	index(e, 'health')
+	index(e, 'targettable_by_towers')
 
 	return e
 }
