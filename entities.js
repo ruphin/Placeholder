@@ -1,5 +1,19 @@
+var towerImage = new Image();
+towerImage.src = 'graphics/OrangeTower.png';
+var harvesterImage = new Image();
+harvesterImage.src = 'graphics/BlueTower.png';
+var beaconImage = new Image();
+beaconImage.src = 'graphics/YellowTower.png';
+var creepImage = new Image();
+creepImage.src = 'graphics/Creep1.png'
+var deadCreepImage = new Image();
+deadCreepImage.src = 'graphics/DeadCreep.png'
+var portalImage = new Image();
+portalImage.src = 'graphics/GrayTower.png'
+
 var enemy_proto = {
 	'color': '#0000ff',
+	'texture': creepImage,
 	'size': 1.0,
 	'target': undefined,
 	'movement_speed': 3.0,
@@ -27,6 +41,7 @@ function spawn_enemy(position) {
 
 var corpse_proto = {
 	'color': '#000000',
+	'texture': deadCreepImage,
 	'size': 1.0,
 	'lifetime': 30,
 	'initial_lifetime': 30
@@ -46,6 +61,7 @@ function spawn_corpse(position) {
 
 var tower_proto = {
 	'color': '#00ff00',
+	'texture': towerImage,
 	'size': 1.0,
 	'target': undefined,
 	'health': 10,
@@ -76,6 +92,7 @@ function spawn_tower(position) {
 
 var harvester_proto = {
 	'color': '#ffff00',
+	'texture': harvesterImage,
 	'size': 1.0,
 	'target': undefined,
 	'health': 10,
@@ -104,6 +121,7 @@ function spawn_harvester(position) {
 
 var beacon_proto = {
 	'color': '#fa8072',
+	'texture': beaconImage,
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
@@ -130,6 +148,7 @@ function spawn_beacon(position) {
 
 var portal_proto = {
 	'color': '#000000',
+	'texture': portalImage,
 	'size': 1.0,
 	'health': 100,
 	'rate': 3,
