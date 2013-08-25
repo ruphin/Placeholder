@@ -68,8 +68,12 @@ function init_eventhandlers() {
 		if(e.which == 3) mouse.right = false;
 	});
 
-	$(canvas).mouseleave(function(e) {
+	$(canvas).mouseenter(function(e) {
+		mouse.over = true
+	});
 
+	$(canvas).mouseleave(function(e) {
+		mouse.over = false
 	});
 
 	document.addEventListener("mousemove", function(e) {
@@ -148,7 +152,7 @@ function handle_input(delta) {
 	vec2_sub(mouse.world, camera);
 	vec2_mul(mouse.world, 1.0 / 40);
 
-	if(mouse.left && build_mode) {
+	if(mouse.over && mouse.left && build_mode) {
 		if(on_mouse_click) {
 			on_mouse_click();
 		}
@@ -174,14 +178,41 @@ function build(spawn_function, cost) {
 	}
 }
 
+function draw_cursor(ctx, proto) {
+	var intersection = false;
+	each_entity('collidable', function(e) {
+		if(vec2_distance(e.position, mouse.world) < proto.size * proto.size) {
+			intersection = true;
+		}
+	});
+
+	if(!intersection) {
+		ctx.beginPath();
+			ctx.arc(0, 0, proto.size / 2, 0, 2 * Math.PI, false);
+			ctx.fillStyle = proto.color;
+			ctx.globalAlpha = 0.5;
+		ctx.fill();
+	} else {
+		ctx.beginPath();
+			ctx.arc(0, 0, proto.size / 2, 0, 2 * Math.PI, false);
+			ctx.fillStyle = '#ff0000';
+			ctx.globalAlpha = 0.5;
+		ctx.fill();
+	}
+
+	if(proto.range) { 
+		ctx.beginPath();
+			ctx.arc(0, 0, proto.range, 0, 2 * Math.PI, false);
+			ctx.strokeStyle = '#ff0000';
+			ctx.globalAlpha = 0.5;
+		ctx.stroke();
+	}
+}
+
 function set_tower_mode() {
 	console.log('tower mode')
 	on_mouse_draw = function(ctx) {
-		ctx.beginPath();
-			ctx.arc(0, 0, 0.5, 0, 2 * Math.PI, false);
-			ctx.fillStyle = '#00ff00';
-			ctx.globalAlpha = 0.5;
-		ctx.fill();
+		draw_cursor(ctx, tower_proto)
 	}
 	on_mouse_click = function() {
 		build(spawn_tower, 10)
@@ -192,11 +223,7 @@ function set_harvester_mode() {
 	console.log('harvester mode')
 
 	on_mouse_draw = function(ctx) {
-		ctx.beginPath();
-			ctx.arc(0, 0, 0.5, 0, 2 * Math.PI, false);
-			ctx.fillStyle = '#ffff00';
-			ctx.globalAlpha = 0.5;
-		ctx.fill();
+		draw_cursor(ctx, harvester_proto)
 	}
 	on_mouse_click = function() {
 		build(spawn_harvester, 20)
@@ -216,23 +243,26 @@ function update(delta) {
 		towers.push(e);
 	});
 
+	// Update enemies
 	each_entity('enemy', function(e) {
+		// Find target
 		if(e.target == null || e.target.dead) {
 			e.target = random_element(towers);
 		}
 
 		if(e.target != null) {
+			// Vector toward target
 			var t = vec2_clone(e.target.position);
 			vec2_sub(t, e.position);
 
 			if(vec2_length_squared(t) > 1.0) {
+				// Move toward target
 				vec2_normalize(t)
 				vec2_mul(t, delta * e.movement_speed)
 
 				vec2_add(e.position, t)
 			} else {
-				// TODO: Set distance to exactly 1.0
-
+				// Fire on target
 				if(e.cooldown <= 0) {
 					e.target.health -= e.damage
 					e.cooldown = e.rate
@@ -243,6 +273,7 @@ function update(delta) {
 		}
 	});
 
+	// Update towers
 	each_entity('tower', function(t) {
 	    var score = 0.0
 	    t.target = undefined
@@ -258,6 +289,7 @@ function update(delta) {
 			}
 		});
 
+		// Fire on target
 		if(t.target) {
 			if(t.cooldown <= 0) {
 				t.target.health -= t.damage
@@ -354,7 +386,7 @@ function render(canvas, camera) {
 			}
 		});
 
-		if(on_mouse_draw) {
+		if(mouse.over && on_mouse_draw) {
 			ctx.save()
 				ctx.translate(mouse.world.x, mouse.world.y)
 				on_mouse_draw(ctx)

@@ -1,16 +1,20 @@
+var enemy_proto = {
+	'color': '#0000ff',
+	'size': 1.0,
+	'target': undefined,
+	'movement_speed': 1.0,
+	'damage': 1,
+	'cooldown': 0,
+	'rate': 1,
+	'health': 5,
+	'maximum_health': 5
+}
+
 function spawn_enemy(position) {
 	var e = create_entity()
+	copy(enemy_proto, e)
 	
 	e.position = position
-	e.color = '#0000ff'
-	e.size = 1.0
-	e.target = undefined
-	e.movement_speed = 1.0
-	e.damage = 1
-	e.cooldown = 0
-	e.rate = 1
-	e.health = 5
-	e.maximum_health = 5
 	
 	index(e, 'drawable')
 	index(e, 'collidable')
@@ -21,19 +25,23 @@ function spawn_enemy(position) {
 	return e
 }
 
+var tower_proto = {
+	'color': '#00ff00',
+	'size': 1.0,
+	'target': undefined,
+	'health': 10,
+	'rate': 1,
+	'cooldown': 0,
+	'maximum_health': 10,
+	'damage': 1,
+	'range': 5
+}
+
 function spawn_tower(position) {
 	var e = create_entity()
+	copy(tower_proto, e)
 	
 	e.position = position
-	e.color = '#00ff00'
-	e.size = 1.0
-	e.target = undefined
-	e.health = 10
-	e.rate = 1
-	e.cooldown = 0
-	e.maximum_health = 10
-	e.damage = 1
-	e.range = 5
 	
 	index(e, 'drawable')
 	index(e, 'collidable')
@@ -43,18 +51,22 @@ function spawn_tower(position) {
 	return e
 }
 
+var harvester_proto = {
+	'color': '#ffff00',
+	'size': 1.0,
+	'target': undefined,
+	'health': 10,
+	'rate': 1,
+	'cooldown': 0,
+	'maximum_health': 10,
+	'range': 5
+}
+
 function spawn_harvester(position) {
 	var e = create_entity()
+	copy(harvester_proto, e)
 	
 	e.position = position
-	e.color = '#ffff00'
-	e.size = 1.0
-	e.target = undefined
-	e.health = 10
-	e.rate = 1
-	e.cooldown = 0
-	e.maximum_health = 10
-	e.range = 5
 	
 	index(e, 'drawable')
 	index(e, 'collidable')
@@ -64,16 +76,20 @@ function spawn_harvester(position) {
 	return e
 }
 
+var portal_proto = {
+	'color': '#000000',
+	'size': 1.0,
+	'health': 100,
+	'rate': 3,
+	'cooldown': 0,
+	'maximum_health': 100
+}
+
 function spawn_portal(position) {
 	var e = create_entity()
+	copy(portal_proto, e)
 	
 	e.position = position
-	e.color = '#000000'
-	e.size = 1.0
-	e.health = 100
-	e.rate = 3
-	e.cooldown = 0
-	e.maximum_health = 100
 	
 	index(e, 'drawable')
 	index(e, 'collidable')
@@ -82,4 +98,12 @@ function spawn_portal(position) {
 	index(e, 'targettable_by_towers')
 	
 	return e
+}
+
+function copy(a, b) {
+	for(var i in a) {
+		if (a.hasOwnProperty(i)) {
+			b[i] = a[i];
+		}
+	}
 }
