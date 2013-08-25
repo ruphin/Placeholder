@@ -28,6 +28,8 @@ function spawn_enemy(position) {
 var corpse_proto = {
 	'color': '#000000',
 	'size': 1.0,
+	'lifetime': 30,
+	'initial_lifetime': 30
 }
 
 function spawn_corpse(position) {
@@ -38,6 +40,7 @@ function spawn_corpse(position) {
 	
 	index(e, 'drawable')
 	index(e, 'collidable')
+	index(e, 'corpse')
 	
 	return e
 }

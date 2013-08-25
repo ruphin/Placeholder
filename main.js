@@ -304,6 +304,7 @@ function update(delta) {
 		}
 	});
 
+	// Update portals
 	each_entity('portal', function(e) {
 		e.cooldown -= delta;
 		if(e.cooldown < 0.0) {
@@ -312,13 +313,23 @@ function update(delta) {
 		}
 	});
 
-	each_entity('health', function(t) {
-		if(t.health <= 0) {
-			t.dead = true;
-			if(indexed(t, 'enemy')) {
+	// Update corpses
+	each_entity('corpse', function(e) {
+		e.lifetime -= delta;
+		if(e.lifetime <= 0) {
+			index(e, destroy)
+		}
+	});
+
+	// Destroy dead enemies
+	each_entity('health', function(e) {
+		if(e.health <= 0) {
+			e.dead = true;
+			if(indexed(e, 'enemy')) {
+				spawn_corpse(e.position) // Note: reuses position instance
 				total_score = total_score + 1
 			}
-			index(t, 'destroy')
+			index(e, 'destroy')
 		}
 	});
 
@@ -365,6 +376,9 @@ function render(canvas, camera) {
 			ctx.save()
 				ctx.translate(e.position.x, e.position.y)
 				ctx.beginPath();
+					if(e.lifetime) {
+						ctx.globalAlpha = e.lifetime / e.initial_lifetime
+					}
 					ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
 					ctx.fillStyle = e.color;
 				ctx.fill();
