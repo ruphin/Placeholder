@@ -550,10 +550,17 @@ function render(canvas, camera) {
 		});
 
 		// Draw lasers
-		ctx.lineWidth = 0.1;
 		each_entity('tower', function(e) {
 			if(e.target) {
+				ctx.lineWidth = 0.1;
 				ctx.strokeStyle = '#ff0000';
+				ctx.beginPath();
+				ctx.moveTo(e.position.x, e.position.y);
+				ctx.lineTo(e.target.position.x, e.target.position.y);
+				ctx.stroke();
+
+				ctx.lineWidth = 0.05;
+				ctx.strokeStyle = '#ffdddd';
 				ctx.beginPath();
 				ctx.moveTo(e.position.x, e.position.y);
 				ctx.lineTo(e.target.position.x, e.target.position.y);
@@ -565,7 +572,15 @@ function render(canvas, camera) {
 		ctx.lineWidth = 0.1;
 		each_entity('harvester', function(e) {
 			if(e.target) {
-				ctx.strokeStyle = '#ffff00';
+				ctx.lineWidth = 0.1;
+				ctx.strokeStyle = '#0000ff';
+				ctx.beginPath();
+				ctx.moveTo(e.position.x, e.position.y);
+				ctx.lineTo(e.target.position.x, e.target.position.y);
+				ctx.stroke();
+
+				ctx.lineWidth = 0.05;
+				ctx.strokeStyle = '#ddddff';
 				ctx.beginPath();
 				ctx.moveTo(e.position.x, e.position.y);
 				ctx.lineTo(e.target.position.x, e.target.position.y);
@@ -588,6 +603,7 @@ function render(canvas, camera) {
 		ctx.scale(3, 3)
 
 		// Draw background
+		ctx.lineWidth = 0.333
 		ctx.beginPath();
 		ctx.rect(0, 0, WORLD_SIZE, WORLD_SIZE);
 		ctx.fillStyle='#ffffff';
@@ -596,7 +612,7 @@ function render(canvas, camera) {
 		ctx.stroke();
 
 		// Draw frame
-		ctx.lineWidth = 0.5
+		ctx.lineWidth = 0.333
 		ctx.beginPath();
 		ctx.strokeStyle='#aaaaaa';
 		ctx.rect(
