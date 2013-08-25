@@ -339,7 +339,7 @@ function update(delta) {
 		var score = 999999999;
 		if(e.target == null || e.target.dead) {
 			each_entity('targettable_by_enemies', function(t) {
-				var s = vec2_distance_squared(e.position, t.position) + Math.random() * 5;
+				var s = vec2_distance(e.position, t.position) + Math.random() * 5;
 				if(s < score) {
 					score = s
 					e.target = t
