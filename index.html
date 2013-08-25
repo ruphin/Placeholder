@@ -18,9 +18,29 @@
 				height: 600px;
 			}
 
+			#build_menu {
+				display: inline;
+				position: relative;
+				margin: auto;
+			}
+
 			#play_button {
 				width: 50px;
 				height: 50px;
+			}
+
+			.build_button {
+				width: 100px;
+				height: 50px;
+			}
+
+			#money {
+				margin-left: 5px;
+				margin-right: 10px;
+			}
+
+			#score {
+				margin-left: 5px;
 			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
@@ -35,10 +55,15 @@
     </head>
     <body>
 		<div id="context">
+	    	<div id="build_menu">
+	    		<input type="button" id="tower_button" class="build_button" onclick="set_tower_mode()" value="Tower"/>
+	    		<input type="button" id="harvester_button" class="build_button" onclick="set_harvester_mode()" value="Harvester"/>
+	    	</div>
 			<canvas id="canvas"></canvas>
 			<div id="menu">
-				<input type="button" onclick="play()" id="play_button" value="Play"></input>
-				<span>Money</span>
+				<input type="button" onclick="play()" id="play_button" value="Play"/>
+				<span>Money</span><span id="money"></span>
+				<span>Score</span><span id="score"></span>
 			</div>
 		</div>
 	</body>
