@@ -2,8 +2,11 @@
 - towers targetten ook andere towers, beacons en harvesters, maar ze prioriteren enemies.
 
 - splash damage tower
+- healing tower
 
-- high-score list
+- rounds as score
+
+- click on mini map
 
 - graphics
 - ALLES BALANCEN
