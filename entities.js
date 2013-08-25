@@ -39,7 +39,6 @@ function spawn_corpse(position) {
 	e.position = position
 
 	index(e, 'drawable')
-	index(e, 'collidable')
 	index(e, 'corpse')
 
 	return e
