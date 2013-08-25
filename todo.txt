@@ -4,5 +4,4 @@
 - rounds as score
 - click on mini map
 
-- graphics
 - ALLES BALANCEN

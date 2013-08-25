@@ -9,7 +9,7 @@ creepImage.src = 'graphics/Creep1.png'
 var deadCreepImage = new Image();
 deadCreepImage.src = 'graphics/DeadCreep.png'
 var portalImage = new Image();
-portalImage.src = 'graphics/GrayTower.png'
+portalImage.src = 'graphics/Portal1.png'
 
 var enemy_proto = {
 	'color': '#0000ff',
