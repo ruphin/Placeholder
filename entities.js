@@ -31,7 +31,6 @@ function spawn_enemy(position) {
 	e.position = position
 
 	index(e, 'drawable')
-	//index(e, 'collidable')
 	index(e, 'enemy')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
@@ -60,7 +59,7 @@ function spawn_corpse(position) {
 }
 
 var tower_proto = {
-	'color': '#00ff00',
+	'color': '#ff0000',
 	'texture': towerImage,
 	'size': 1.0,
 	'target': undefined,
@@ -91,7 +90,7 @@ function spawn_tower(position) {
 }
 
 var harvester_proto = {
-	'color': '#ffff00',
+	'color': '#0000aa',
 	'texture': harvesterImage,
 	'size': 1.0,
 	'target': undefined,
@@ -120,7 +119,7 @@ function spawn_harvester(position) {
 }
 
 var beacon_proto = {
-	'color': '#fa8072',
+	'color': '#ffaa00',
 	'texture': beaconImage,
 	'size': 1.0,
 	'health': 1,

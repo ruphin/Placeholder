@@ -225,11 +225,15 @@ function draw_cursor(ctx, proto) {
 	});
 
 	if(!intersection) {
-		ctx.beginPath();
-			ctx.arc(0, 0, proto.size / 2, 0, 2 * Math.PI, false);
-			ctx.fillStyle = proto.color;
-			ctx.globalAlpha = 0.5;
-		ctx.fill();
+		ctx.globalAlpha = 0.5;
+		if(proto.texture) {
+				ctx.drawImage(proto.texture, -0.5, -0.5, 1, 1);
+			} else {
+				ctx.beginPath();
+					ctx.arc(0, 0, proto.size * 0.5, 0, 2 * Math.PI, false);
+					ctx.fillStyle = proto.color;
+				ctx.fill();
+			}
 	} else {
 		ctx.beginPath();
 			ctx.arc(0, 0, proto.size / 2, 0, 2 * Math.PI, false);
@@ -241,7 +245,7 @@ function draw_cursor(ctx, proto) {
 	if(proto.range) {
 		ctx.beginPath();
 			ctx.arc(0, 0, proto.range, 0, 2 * Math.PI, false);
-			ctx.strokeStyle = '#ff0000';
+			ctx.strokeStyle = proto.color;
 			ctx.globalAlpha = 0.5;
 		ctx.stroke();
 	}
@@ -486,29 +490,35 @@ function render(canvas, camera) {
 		each_entity('drawable', function(e) {
 			ctx.save()
 			ctx.translate(e.position.x, e.position.y)
-			ctx.beginPath();
+			
 			if(e.lifetime) {
 				ctx.globalAlpha = e.lifetime / e.initial_lifetime
 			}
 			if(e.texture) {
 				ctx.drawImage(e.texture, -0.5, -0.5, 1, 1);
 			} else {
-				ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
-				ctx.fillStyle = e.color;
-			}
-			ctx.fill();
-
-			if(e.health) {
 				ctx.beginPath();
-				//ctx.arc(0, 0, e.size * 0.4, 0, 2 * Math.PI * (e.health / e.maximum_health), false);
-				ctx.fillStyle = '#ff0000';
+					ctx.arc(0, 0, e.size * 0.5, 0, 2 * Math.PI, false);
+					ctx.fillStyle = e.color;
 				ctx.fill();
 			}
 
+			ctx.lineWidth = 0.01;
+			if(e.health && e.health < e.maximum_health) {
+				ctx.beginPath();
+				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, e.health / e.maximum_health, 0.1)
+				ctx.fillStyle = '#ff0000';
+				ctx.fill();
+				ctx.rect(-e.size / 2, -e.size / 2 - 0.1, 1.0, 0.1)
+				ctx.strokeStyle = '#000000';
+				ctx.stroke();
+			}
+
+			ctx.lineWidth = 0.05;
 			if(build_mode && e.range) {
 				ctx.beginPath();
 				ctx.arc(0, 0, e.range, 0, 2 * Math.PI, false);
-				ctx.strokeStyle = '#ff0000';
+				ctx.strokeStyle = e.color;
 				ctx.globalAlpha = 0.5;
 				ctx.stroke();
 			}
