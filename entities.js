@@ -64,10 +64,10 @@ var tower_proto = {
 	'size': 1.0,
 	'target': undefined,
 	'health': 10,
-	'rate': 0.2,
+	'rate': 0.05,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 0.3,
+	'damage': 0.12,
 	'range': 3,
 	'cost': 10
 }
@@ -124,7 +124,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 10,
+	'range': 18,
 	'cost': 20
 }
 
