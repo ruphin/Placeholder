@@ -23,7 +23,7 @@ var enemy_proto = {
 	'size': 1.0,
 	'target': undefined,
 	'movement_speed': 2,
-	'damage': 1,
+	'damage': 1.5,
 	'cooldown': 0,
 	'rate': 1,
 	'health': 5,
@@ -130,7 +130,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 10,
+	'range': 12,
 	'cost': 20
 }
 
@@ -163,10 +163,10 @@ var portal_proto = {
 	'frametime': 0,
 	*/
 	'size': 3.0,
-	'health': 150,
+	'health': 75,
 	'rate': 3,
 	'cooldown': 0,
-	'maximum_health': 150
+	'maximum_health': 75
 }
 
 function spawn_portal(position) {

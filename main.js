@@ -446,13 +446,13 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.1, round))
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, round))
 
 				vec2_add(e.position, t)
 			} else {
 				// Fire on target
 				if(e.cooldown <= 0) {
-					e.target.health -= e.damage
+					e.target.health -= e.damage * Math.pow(1.2, round)
 					e.cooldown = e.rate
 				} else {
 					e.cooldown -= delta
