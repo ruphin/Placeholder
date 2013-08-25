@@ -64,10 +64,10 @@ var tower_proto = {
 	'size': 1.0,
 	'target': undefined,
 	'health': 10,
-	'rate': 1,
+	'rate': 0.2,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 1,
+	'damage': 0.3,
 	'range': 3,
 	'cost': 10
 }
@@ -124,7 +124,7 @@ var beacon_proto = {
 	'size': 1.0,
 	'health': 1,
 	'maximum_health': 1,
-	'range': 9,
+	'range': 10,
 	'cost': 20
 }
 
@@ -148,7 +148,7 @@ function spawn_beacon(position) {
 var portal_proto = {
 	'color': '#000000',
 	'texture': portalImage,
-	'size': 1.0,
+	'size': 2.0,
 	'health': 100,
 	'rate': 3,
 	'cooldown': 0,
