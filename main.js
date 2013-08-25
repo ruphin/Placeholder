@@ -276,9 +276,9 @@ function update(delta) {
 	timer -= delta;
 
 	// Make a list of towers
-	var towers = [];
-	each_entity('tower', function(e) {
-		towers.push(e);
+	var targets = [];
+	each_entity('targettable_by_enemies', function(e) {
+		targets.push(e);
 	});
 
 	// Update enemies
@@ -297,7 +297,7 @@ function update(delta) {
 		}
 		// Find target
 		if(e.target == null || e.target.dead) {
-			e.target = random_element(towers);
+			e.target = random_element(targets);
 		}
 
 		if(e.target != null) {

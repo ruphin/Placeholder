@@ -69,6 +69,7 @@ function spawn_tower(position) {
 	index(e, 'tower')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
+	index(e, 'targettable_by_enemies')
 
 	return e
 }
@@ -95,6 +96,7 @@ function spawn_harvester(position) {
 	index(e, 'harvester')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
+	index(e, 'targettable_by_enemies')
 
 	return e
 }
@@ -119,6 +121,7 @@ function spawn_beacon(position) {
 	index(e, 'beacon')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
+	index(e, 'targettable_by_enemies')
 
 	return e
 }
