@@ -11,8 +11,8 @@ var build_mode = false
 
 var on_mouse_click = undefined
 var on_mouse_draw = undefined
-
-var money = 60
+var STARTING_MONEY = 80
+var money = STARTING_MONEY
 var total_score = 0
 
 var WORLD_SIZE = 40
@@ -63,7 +63,7 @@ function new_game() {
 	on_mouse_click = undefined
 	on_mouse_draw = undefined
 
-	money = 60
+	money = STARTING_MONEY
 	total_score = 0
 
 	mini_map_mode = false
