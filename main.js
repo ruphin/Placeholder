@@ -315,9 +315,53 @@ function update(delta) {
 
 	// Update corpses
 	each_entity('corpse', function(e) {
-		e.lifetime -= delta;
-		if(e.lifetime <= 0) {
-			index(e, destroy)
+		if(!e.targetted) {
+			e.lifetime -= delta;
+			if(e.lifetime <= 0) {
+				index(e, 'destroy')
+			}
+		}
+	});
+
+	// Update harvesters
+	each_entity('harvester', function(e) {
+		var score = 0.0
+
+		// Find target
+		if(!e.target || e.target.dead) {
+			each_entity('corpse', function(t) {
+				var d = vec2_distance_squared(e.position, t.position)
+				if(d < e.range * e.range) {
+					var s = 100 / d
+					if(s > score) {
+						score = s
+						
+						if(!t.targetted) {
+							e.target = t
+						}
+					}
+				}
+			});
+		}
+
+		// Pull target
+		if(e.target) {
+			e.target.targetted = true
+		
+			var t = vec2_clone(e.position);
+			vec2_sub(t, e.target.position);
+
+			if(vec2_length_squared(t) > 0.1 * 0.1) {
+				// Move toward target
+				vec2_normalize(t)
+				vec2_mul(t, delta * e.pull_speed)
+
+				vec2_add(e.target.position, t)
+			} else {
+				index(e.target, 'destroy')
+				money += 5
+				e.target = undefined
+			}
 		}
 	});
 
@@ -328,6 +372,11 @@ function update(delta) {
 			if(indexed(e, 'enemy')) {
 				spawn_corpse(e.position) // Note: reuses position instance
 				total_score = total_score + 1
+			}
+			if(indexed(e, 'harvester')) {
+				if(e.target) {
+					e.target.targetted = false
+				}
 			}
 			index(e, 'destroy')
 		}
@@ -405,6 +454,18 @@ function render(canvas, camera) {
 		each_entity('tower', function(e) {
 			if(e.target) {
 				ctx.strokeStyle = '#ff0000';
+				ctx.beginPath();
+					ctx.moveTo(e.position.x, e.position.y);
+					ctx.lineTo(e.target.position.x, e.target.position.y);
+				ctx.stroke();
+			}
+		});
+
+		// Draw pulling beams
+		ctx.lineWidth = 0.1;
+		each_entity('harvester', function(e) {
+			if(e.target) {
+				ctx.strokeStyle = '#ffff00';
 				ctx.beginPath();
 					ctx.moveTo(e.position.x, e.position.y);
 					ctx.lineTo(e.target.position.x, e.target.position.y);

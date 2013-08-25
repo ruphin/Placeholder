@@ -77,11 +77,10 @@ var harvester_proto = {
 	'size': 1.0,
 	'target': undefined,
 	'health': 10,
-	'rate': 1,
-	'cooldown': 0,
 	'maximum_health': 10,
 	'range': 4,
-	'cost': 20
+	'cost': 20,
+	'pull_speed': 1
 }
 
 function spawn_harvester(position) {

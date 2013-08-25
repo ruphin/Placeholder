@@ -19,7 +19,7 @@ function index(entity, name) {
 }
 
 function indexed(entity, name) {
-	return entity.id in indices[name];
+	return name in indices && entity.id in indices[name];
 }
 
 function destroy_entity(entity) {
