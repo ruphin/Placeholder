@@ -75,11 +75,15 @@ function spawn_enemies(count) {
 	}
 }
 
-function spawn_random_portal() {
-	spawn_portal(vec2(
-		Math.random() * (WORLD_SIZE - 10) + 5,
-		Math.random() * (WORLD_SIZE - 10) + 5
-	));
+function spawn_random_portal() {;
+	do {
+		position = vec2(
+			Math.random() * (WORLD_SIZE - 10) + 5,
+			Math.random() * (WORLD_SIZE - 10) + 5
+		)
+	} while(intersects(portal_proto, position));
+
+	spawn_portal(position);
 }
 
 function init_eventhandlers() {
@@ -262,24 +266,27 @@ function build(spawn_function, cost) {
 	}
 }
 
-function draw_cursor(ctx, proto) {
+function intersects(proto, position) {
 	var intersection = false;
 	each_entity('collidable', function(e) {
-		if(vec2_distance(e.position, mouse.world) < proto.size * proto.size) {
+		if(vec2_distance(e.position, position) < proto.size * proto.size) {
 			intersection = true;
 		}
 	});
+	return intersection;
+}
 
-	if(!intersection) {
+function draw_cursor(ctx, proto) {
+	if(!intersects(proto, mouse.world)) {
 		ctx.globalAlpha = 0.5;
 		if(proto.texture) {
-				ctx.drawImage(proto.texture, -proto.size / 2, -proto.size / 2, proto.size, proto.size);
-			} else {
-				ctx.beginPath();
-					ctx.arc(0, 0, proto.size * 0.5, 0, 2 * Math.PI, false);
-					ctx.fillStyle = proto.color;
-				ctx.fill();
-			}
+			ctx.drawImage(proto.texture, -proto.size / 2, -proto.size / 2, proto.size, proto.size);
+		} else {
+			ctx.beginPath();
+				ctx.arc(0, 0, proto.size * 0.5, 0, 2 * Math.PI, false);
+				ctx.fillStyle = proto.color;
+			ctx.fill();
+		}
 	} else {
 		ctx.beginPath();
 			ctx.arc(0, 0, proto.size / 2, 0, 2 * Math.PI, false);
