@@ -514,7 +514,7 @@ function update(delta) {
 		var min_distance = beacon_proto.range + 1
 		each_entity('beacon', function(b) {
 			beacon_distance = vec2_distance(e.position, b.position)
-			if(beacon_distance < b.range + e.size / 2) {
+			if(beacon_distance < b.range + e.size * 0.5 && beacon_distance < min_distance) {
 				beacon = b;
 				min_distance = beacon_distance;
 			}
