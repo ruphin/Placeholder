@@ -62,13 +62,35 @@
 				text-align: normal;
 				margin: auto;
 				margin-top:10px;
+				padding-bottom: 50px;
+				clear: both;
+			}
+
+			.item_box {
+				margin-bottom: 40px;
+			}
+			.item_box img {
+				float: left;
+				margin-bottom: 10px;
+			}
+
+			.item_box p {
+				clear: both;
+			}
+
+			.item_title {
+				float: left;
+				margin-left: 15px;
+				margin-top: 10px;
 			}
 
 			.stats {
 				float: right;
+				margin-top: 10px;
 			}
 
 			#play_button {
+				-webkit-appearance: none;
 				width: 50px;
 				height: 50px;
 			}
@@ -107,6 +129,7 @@
 			}
 
 			#undo_button {
+				-webkit-appearance: none;
 				width: 50px;
 				height: 50px;
 				float: right;
@@ -145,12 +168,12 @@
 		</div>
 		<div id="menu">
 			<input type="button" onclick="play()" id="play_button" value="Play" />
-			<span>&nbsp; &nbsp; Money</span><span id="money"></span>
+			<span>&nbsp; &nbsp; Energy</span><span id="money"></span>
 			<span>&nbsp; &nbsp; Kills</span><span id="score"></span>
 			<span>&nbsp; &nbsp; Round</span><span id="round"></span>
 			<input type="button" onclick="undo_build()" id="undo_button" value="Undo"/>
 	    	<div id="build_menu">
-	    		
+
 	    		<input type="image" src="graphics/OrangeTower.png" id="tower_button" class="build_button" onclick="set_tower_mode()" alt="Damage" Title="Damage"/>
 
 	    		<input type="image" src="graphics/BlueTower.png" id="harvester_button" class="build_button" onclick="set_harvester_mode()" alt="Harvester" Title="Harvester"/>
@@ -161,28 +184,32 @@
 	    	</div>
 		</div>
     	<div id="description">
-    		<b>Game description</b><br>
-    		The goal of the game is to survive as long as possible. The first phase of the game is the building phase. Here, you can build structures anywhere on the map. The possible structures you can build are listed below, with their cost and their health. You can build structures from the menu at the bottom right of the map during the build time. When all your structures are gone, you lose.<br><br>
+    		<h3>Game description</h3>
+    		<p>The goal of the game is to survive as long as possible. The first phase of the game is the building phase. In this phase you can build structures anywhere on the map. The possible structures you can build are listed below, with their cost and their health. You can build structures from the menu at the bottom right of the map during the build time. When all your structures are gone, you lose.<br><br>
 
-    		You can scroll the map above using the arrow keys or by using the mini-map in the top left.  After pressing the 'Play' button the game will run for 10 seconds followed by the next build time. Try to kill as many creeps and survive as many rounds!
-    		<br><br>
-    		<img src="graphics/Portal1.png"/> Portal <span class="stats">Health: 100</span><br>
-    		Portals will randomly appear on the map and spawn creeps.
-    		<br>
-    		<br>
-    		<img src="graphics/Creep1.png"/> Creep <span class="stats">Health: 10</span><br>
-    		Creeps walk over the map and attack your nearest structures.
-    		<br>
-    		<br>
-    		<img src="graphics/OrangeTower.png"/> Tower <span class="stats">Health: 10&nbsp; Cost: 10</span><br>
-    		Towers deals damage to an enemy nearby. However, it will target your own structures if they are in range and no creeps are within range.
-    		<br><br>
-    		<img src="graphics/BlueTower.png"/> Harvester <span class="stats">Health: 10&nbsp; Cost: 20</span><br>
-    		Harvesters pull in the dead bodies of creeps and process them for money. Note that dead creeps decay over time!
-    		<br><br>
-    		<img src="graphics/YellowTower.png"/> Beacon <span class="stats">Health: 1&nbsp; Cost: 20</span><br>
-    		The creeps are drawn by this structure when they are within its range. They do not have very much health though!
-    		<br><br><br><br><br>
+    		You can scroll the map above using the arrow keys or by using the mini-map in the top left.  After pressing the 'Play' button the game will run for 10 seconds followed by the next build time. Every round a new Portal spawns at a random location and Things become more powerful. Try to kill as many Things and survive as many rounds as possible!</p>
+    		<br><br><br>
+    		<div class='item_box'>
+    			<img src="graphics/Portal1.png"/> <span class='item_title'>Portal</span> <span class="stats">Health: 100</span>
+    			<br>
+    			<p>Portals will randomly appear on the map and spawn Things.</p>
+    		</div>
+    		<div class='item_box'>
+    			<img src="graphics/GreenThing.png"/> <span class='item_title'>Thing</span> <span class="stats">Health: 	10</span><br>
+    			<p>Things walk over the map and attack your nearest structures.</p>
+    		</div>
+    		<div class='item_box'>
+    			<img src="graphics/OrangeTower.png"/> <span class='item_title'>Burner</span> <span class="stats">Health: 10&nbsp; Cost: 10</span><br>
+    			<p>Burners deal damage to anything nearby. However, they will prioritize Things and Portals.</p>
+    		</div>
+    		<div class='item_box'>
+    			<img src="graphics/BlueTower.png"/> <span class='item_title'>Harvester</span> <span class="stats">Health: 10&nbsp; Cost: 20</span><br>
+    			<p>Harvesters pull in dead Things and process them for energy. Note that dead Things decay over time!</p>
+    		</div>
+    		<div class='item_box'>
+    			<img src="graphics/YellowTower.png"/> <span class='item_title'>Beacon</span> <span class="stats">Health: 1&nbsp; Cost: 20</span><br>
+    			<p>The Things are drawn by Beacons when they are within range. They do not have very much health though!</p>
+    		</div>
     	</div>
 	</body>
 </html>
