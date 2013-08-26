@@ -253,6 +253,14 @@ function handle_input(delta) {
 		set_beacon_mode();
 	}
 
+	if(down[52]) {
+		set_slower_mode();
+	}
+
+	if(down[27]) {
+		set_tower_range_mode();
+	}
+
 	if(down[85]) {
 		undo_build();
 		down[85] = false;
@@ -309,7 +317,7 @@ function handle_input(delta) {
 	}
 
 	if(mouse.over && mouse.right) {
-		allow_set_tower_range();
+		set_tower_range_mode();
 	}
 
 	if(camera.x > 0) {
@@ -338,11 +346,11 @@ function set_tower_range(e) {
 	}
 
 	on_mouse_click = function() {
-		allow_set_tower_range()
+		set_tower_range_mode()
 	}
 }
 
-function allow_set_tower_range() {
+function set_tower_range_mode() {
 	on_mouse_draw = function() {}
 	on_mouse_click = function() {
 		each_entity('tower', function(e) {
@@ -456,7 +464,7 @@ function set_tower_mode() {
 	}
 	on_mouse_click = function() {
 		build(spawn_tower, tower_proto)
-		allow_set_tower_range()
+		set_tower_range_mode()
 	}
 }
 
@@ -467,7 +475,7 @@ function set_harvester_mode() {
 	}
 	on_mouse_click = function() {
 		build(spawn_harvester, harvester_proto)
-		allow_set_tower_range()
+		set_tower_range_mode()
 	}
 }
 
@@ -478,7 +486,7 @@ function set_beacon_mode() {
 	}
 	on_mouse_click = function() {
 		build(spawn_beacon, beacon_proto)
-		allow_set_tower_range()
+		set_tower_range_mode()
 	}
 }
 
@@ -489,7 +497,7 @@ function set_slower_mode() {
 	}
 	on_mouse_click = function() {
 		build(spawn_slower, slower_proto)
-		allow_set_tower_range()
+		set_tower_range_mode()
 	}
 }
 
