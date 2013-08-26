@@ -448,12 +448,14 @@ function update(delta) {
 	// Update enemies
 	each_entity('enemy', function(e) {
 		var beacon = undefined
-		var min_distance = beacon_proto.range + 1
+		//var min_distance = beacon_proto.range + 1
+
+		// Target the last added beacon in range
 		each_entity('beacon', function(b) {
 			beacon_distance = vec2_distance(e.position, b.position)
-			if(beacon_distance < b.range + e.size * 0.5 && beacon_distance < min_distance) {
+			if(beacon_distance < b.range + e.size * 0.5 /* && beacon_distance < min_distance */) {
 				beacon = b;
-				min_distance = beacon_distance;
+				//min_distance = beacon_distance;
 			}
 		});
 		if(beacon) {
@@ -488,7 +490,7 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.max(0,round - 10)) * slow_factor)
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, round) * slow_factor)
 
 				vec2_add(e.position, t)
 			} else {
