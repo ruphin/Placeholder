@@ -74,7 +74,8 @@ var tower_proto = {
 	'cooldown': 0,
 	'maximum_health': 10,
 	'damage': 0.14,
-	'range': 2.5,
+	'range': 3,
+	'max_range': 3,
 	'cost': 10
 }
 
@@ -90,6 +91,7 @@ function spawn_tower(position) {
 	index(e, 'health')
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
+	index(e, 'friendly')
 
 
 	return e
@@ -119,6 +121,7 @@ function spawn_slower(position) {
 	index(e, 'health')
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
+	index(e, 'friendly')
 
 	return e
 }
@@ -147,7 +150,7 @@ function spawn_harvester(position) {
 	index(e, 'health')
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
-
+	index(e, 'friendly')
 
 	return e
 }
@@ -174,7 +177,7 @@ function spawn_beacon(position) {
 	index(e, 'health')
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
-
+	index(e, 'friendly')
 
 	return e
 }

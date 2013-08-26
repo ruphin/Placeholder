@@ -177,6 +177,10 @@ function loop() {
 			spawn_random_portal()
 			round++;
 
+			each_entity('friendly', function(e) {
+				e.health = e.maximum_health
+			});
+
 			build_mode = true
 		}
 
@@ -304,6 +308,9 @@ function handle_input(delta) {
 		}
 	}
 
+	if(mouse.over && mouse.right) {
+		allow_set_tower_range();
+	}
 
 	if(camera.x > 0) {
 		camera.x = 0
@@ -325,10 +332,8 @@ function handle_input(delta) {
 }
 
 function set_tower_range(e) {
-	var max_range = e.range;
-
 	on_mouse_draw = function(ctx) {
-		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), max_range), 1.0)
+		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), e.max_range), 1.0)
 		highlight_in_range(ctx, 'targettable_by_towers', e, e.position)
 	}
 
@@ -830,21 +835,7 @@ function render(canvas, camera, delta) {
 			ctx.fill();
 		});
 
-		each_entity('tower', function(e) {
-			ctx.beginPath();
-				ctx.rect(e.position.x, e.position.y, 1, 1)
-				ctx.fillStyle = '#000000';
-			ctx.fill();
-		});
-
-		each_entity('beacon', function(e) {
-			ctx.beginPath();
-				ctx.rect(e.position.x, e.position.y, 1, 1)
-				ctx.fillStyle = '#000000';
-			ctx.fill();
-		});
-
-		each_entity('harvester', function(e) {
+		each_entity('friendly', function(e) {
 			ctx.beginPath();
 				ctx.rect(e.position.x, e.position.y, 1, 1)
 				ctx.fillStyle = '#000000';
