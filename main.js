@@ -765,7 +765,7 @@ function render(canvas, camera, delta) {
 		ctx.lineWidth = 0.333
 		ctx.beginPath();
 		ctx.rect(0, 0, WORLD_SIZE, WORLD_SIZE);
-		ctx.fillStyle='#ffffff';
+		ctx.fillStyle='#9999aa';
 		ctx.fill();
 		ctx.strokeStyle='#000000';
 		ctx.stroke();
@@ -773,7 +773,7 @@ function render(canvas, camera, delta) {
 		// Draw frame
 		ctx.lineWidth = 0.333
 		ctx.beginPath();
-		ctx.strokeStyle='#aaaaaa';
+		ctx.strokeStyle='#666666';
 		ctx.rect(
 			-camera.x / ZOOM,
 			-camera.y / ZOOM,
