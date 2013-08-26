@@ -97,8 +97,8 @@ function spawn_random_portal() {
 	}
 
 	var p = spawn_portal(position);
-	p.health *= Math.pow(1.02, round)
-	p.maximum_health = p.health
+	//p.health *= Math.pow(1.05, round)
+	//p.maximum_health = p.health
 }
 
 function undo_build() {
@@ -268,7 +268,6 @@ function handle_input(delta) {
 			if(on_mouse_click) {
 				on_mouse_click();
 			}
-			mouse.left = false;
 		}
 	}
 
@@ -286,11 +285,13 @@ function set_tower_range(e) {
 	on_mouse_draw = function(ctx) {
 		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), e.max_range), 1.0)
 		highlight_in_this_range(ctx, 'building', e.position, e.range)
+
+		if(!mouse.left) {
+			set_tower_range_mode()
+		}
 	}
 
-	on_mouse_click = function() {
-		set_tower_range_mode()
-	}
+	on_mouse_click = function() {}
 }
 
 function set_tower_range_mode() {
@@ -401,6 +402,7 @@ function set_tower_mode() {
 	on_mouse_click = function() {
 		build(spawn_tower, tower_proto)
 		set_tower_range_mode()
+		mouse.left = false
 	}
 }
 
@@ -412,6 +414,7 @@ function set_harvester_mode() {
 	on_mouse_click = function() {
 		build(spawn_harvester, harvester_proto)
 		set_tower_range_mode()
+		mouse.left = false
 	}
 }
 
@@ -423,6 +426,7 @@ function set_beacon_mode() {
 	on_mouse_click = function() {
 		build(spawn_beacon, beacon_proto)
 		set_tower_range_mode()
+		mouse.left = false
 	}
 }
 
@@ -434,6 +438,7 @@ function set_slower_mode() {
 	on_mouse_click = function() {
 		build(spawn_slower, slower_proto)
 		set_tower_range_mode()
+		mouse.left = false
 	}
 }
 
@@ -483,7 +488,7 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.abs(round-10) + 1) * slow_factor)
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.04, round) * slow_factor)
 
 				vec2_add(e.position, t)
 			} else {
@@ -554,17 +559,15 @@ function update(delta) {
 
 	// Update harvesters
 	each_entity('harvester', function(e) {
-		var score = 0.0
+		var score = harvester_proto.range + 1
 
 		// Find target
 		if(!e.target || e.target.dead) {
 			each_entity('corpse', function(t) {
-				var d = vec2_distance_squared(e.position, t.position)
-				if(d < e.range * e.range) {
-					var s = 100 / d
-					if(s > score) {
-						score = s
-
+				var d = vec2_distance(e.position, t.position) - t.size / 2
+				if(d < e.range) {
+					if(d < score) {
+						score = d
 						if(!t.targetted) {
 							e.target = t
 						}
