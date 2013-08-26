@@ -4,6 +4,8 @@ var harvesterImage = new Image();
 harvesterImage.src = 'graphics/BlueTower.png';
 var beaconImage = new Image();
 beaconImage.src = 'graphics/YellowTower.png';
+var slowerImage = new Image();
+slowerImage.src = 'graphics/GreenTower.png';
 var creepImage = new Image();
 creepImage.src = 'graphics/SuperCreep.png'
 var deadCreepImage = new Image();
@@ -73,9 +75,9 @@ var tower_proto = {
 	'rate': 0.05,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 0.14,
-	'range': 3,
-	'max_range': 3,
+	'damage': 0.13,
+	'range': 2.5,
+	'max_range': 2.5,
 	'cost': 10
 }
 
@@ -99,13 +101,12 @@ function spawn_tower(position) {
 
 var slower_proto = {
 	'color': '#00ff00',
-	'texture': towerImage,
+	'texture': slowerImage,
 	'size': 1.0,
-	'target': undefined,
 	'health': 10,
-	'slow': 0.7,
+	'slow': 0.6,
 	'maximum_health': 10,
-	'range': 4,
+	'range': 5,
 	'cost': 20
 }
 

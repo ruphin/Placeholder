@@ -1,3 +1,7 @@
+var WORLD_SIZE = 40
+var ZOOM = 40
+var STARTING_MONEY = 80
+
 var canvas
 
 var down = [];
@@ -12,12 +16,10 @@ var build_mode = false
 
 var on_mouse_click = undefined
 var on_mouse_draw = undefined
-var STARTING_MONEY = 80
+
 var money = STARTING_MONEY
 var total_score = 0
 
-var WORLD_SIZE = 40
-var ZOOM = 40
 var tile = new Image();
 tile.src = 'graphics/Tile.png'
 
@@ -77,12 +79,6 @@ function new_game() {
 	$('#undo_button').attr('disabled',true);
 }
 
-function spawn_enemies(count) {
-	for(i = 0; i < count; i++) {
-		spawn_enemy(vec2(Math.random() * WORLD_SIZE, Math.random() * WORLD_SIZE))
-	}
-}
-
 function spawn_random_portal() {
 	var position = vec2()
 	var max = 10;
@@ -100,7 +96,9 @@ function spawn_random_portal() {
 		console.log("Too many iterations");
 	}
 
-	spawn_portal(position);
+	var p = spawn_portal(position);
+	p.health *= Math.pow(1.02, round)
+	p.maximum_health = p.health
 }
 
 function undo_build() {
@@ -157,23 +155,26 @@ function game_over() {
 	$('#game_over_score').html(total_score);
 	$('#game_over_round').html(round);
 	$('#game_over').show();
-
 }
 
 var previous = Date.now()
 function loop() {
+	// Compute delta
 	var now = Date.now();
 	var delta = (now - previous) / 1000;
 	previous = now;
+	if(delta > 0.1) delta = 0.1;
 
+	// Update GUI
 	$('#money').html(money)
 	$('#round').html(round)
-	$('#score').html(total_score)
-
-	if(delta > 0.1) delta = 0.1;
+	$('#score').html(total_score);
 
 	if(timer <= 0.0) {
 		if(!build_mode) {
+			// Start new round
+			build_mode = true
+
 			spawn_random_portal()
 			round++;
 
@@ -181,11 +182,9 @@ function loop() {
 				e.health = e.maximum_health
 			});
 
-			build_mode = true
+			$('#play_button').val('Play');
+			$('#play_button').removeAttr('disabled');
 		}
-
-		$('#play_button').val('Play');
-		$('#play_button').removeAttr('disabled');
 	} else {
 		build_mode = false
 		$('#play_button').val(Math.round(timer));
@@ -195,11 +194,7 @@ function loop() {
 
 	handle_input(delta);
 
-	if(!build_mode &&
-	   Object.keys(get_entities('tower')).length == 0 &&
-	   Object.keys(get_entities('harvester')).length == 0 &&
-	   Object.keys(get_entities('beacon')).length == 0 &&
-	   Object.keys(get_entities('slower')).length == 0) {
+	if(!build_mode && Object.keys(get_entities('friendly')).length == 0) {
 		game_over();
 	} else {
 		if(!build_mode) {
@@ -213,53 +208,21 @@ function loop() {
 
 function play() {
 	undo = []
-
-	if(timer <= 0.0) {
-		build_mode = false;
-		timer = 10.0;
-	}
+	build_mode = false;
+	timer = 10.0;
 }
 
 function handle_input(delta) {
-	if(down[37] || down[65]) {
-		camera.x += delta * 1024;
-	}
-
-	if(down[38] || down[87]) {
-		camera.y += delta * 1024;
-	}
-
-	if(down[39] || down[68]) {
-		camera.x -= delta * 1024;
-	}
-
-	if(down[40] || down[83]) {
-		camera.y -= delta * 1024;
-	}
-
-	if(down[80] || down[32]) {
-		play();
-	}
-
-	if(down[49]) {
-		set_tower_mode();
-	}
-
-	if(down[50]) {
-		set_harvester_mode();
-	}
-
-	if(down[51]) {
-		set_beacon_mode();
-	}
-
-	if(down[52]) {
-		set_slower_mode();
-	}
-
-	if(down[27]) {
-		set_tower_range_mode();
-	}
+	if(down[37] || down[65]) camera.x += delta * 1024;
+	if(down[38] || down[87]) camera.y += delta * 1024;
+	if(down[39] || down[68]) camera.x -= delta * 1024;
+	if(down[40] || down[83]) camera.y -= delta * 1024;
+	if(down[80] || down[32]) play();
+	if(down[49]) set_tower_mode();
+	if(down[50]) set_harvester_mode();
+	if(down[51]) set_beacon_mode();
+	if(down[52]) set_slower_mode();
+	if(down[27]) set_tower_range_mode();
 
 	if(down[85]) {
 		undo_build();
@@ -278,17 +241,10 @@ function handle_input(delta) {
 		camera.y *= 0.99
 	}
 
-	if(canvas.width > WORLD_SIZE * ZOOM) {
-		ZOOM = canvas.width / WORLD_SIZE
-	}
+	if(canvas.width > WORLD_SIZE * ZOOM) ZOOM = canvas.width / WORLD_SIZE;
+	if(canvas.height > WORLD_SIZE * ZOOM) ZOOM = canvas.height / WORLD_SIZE;
 
-	if(canvas.height > WORLD_SIZE * ZOOM) {
-		ZOOM = canvas.height / WORLD_SIZE
-	}
-
-	if(!mouse.left) {
-		mini_map_mode = false
-	}
+	if(!mouse.left) mini_map_mode = false;
 
 	if(mouse.right) {
 		camera.x -= mouse.delta.x;
@@ -316,25 +272,12 @@ function handle_input(delta) {
 		}
 	}
 
-	if(mouse.over && mouse.right) {
-		set_tower_range_mode();
-	}
+	if(mouse.over && mouse.right) set_tower_range_mode();
 
-	if(camera.x > 0) {
-		camera.x = 0
-	}
-
-	if(camera.y > 0) {
-		camera.y = 0
-	}
-
-	if(camera.x < -WORLD_SIZE * ZOOM + canvas.width) {
-		camera.x = -WORLD_SIZE * ZOOM + canvas.width
-	}
-
-	if(camera.y < -WORLD_SIZE * ZOOM + canvas.height) {
-		camera.y = -WORLD_SIZE * ZOOM + canvas.height
-	}
+	if(camera.x > 0) camera.x = 0;
+	if(camera.y > 0) camera.y = 0;
+	if(camera.x < -WORLD_SIZE * ZOOM + canvas.width) camera.x = -WORLD_SIZE * ZOOM + canvas.width;
+	if(camera.y < -WORLD_SIZE * ZOOM + canvas.height) camera.y = -WORLD_SIZE * ZOOM + canvas.height;
 
 	vec2_set(mouse.delta, 0, 0);
 }
@@ -363,14 +306,7 @@ function set_tower_range_mode() {
 
 function build(spawn_function, proto) {
 	if(money >= proto.cost) {
-		var intersection = false;
-		each_entity('collidable', function(e) {
-			if(vec2_distance(e.position, mouse.world) < 1.0) {
-				intersection = true;
-			}
-		});
-
-		if(!intersection) {
+		if(!intersects(proto, mouse.world)) {
 			var e = spawn_function(mouse.world);
 
 			undo.push(e);
@@ -501,10 +437,6 @@ function set_slower_mode() {
 	}
 }
 
-function random_element(array) {
-	return array[Math.floor(Math.random()*array.length)];
-}
-
 function update(delta) {
 	timer -= delta;
 
@@ -557,7 +489,7 @@ function update(delta) {
 			} else {
 				// Fire on target
 				if(e.cooldown <= 0) {
-					e.target.health -= e.damage * Math.pow(1.1, round)
+					e.target.health -= e.damage * Math.pow(1.02, round)
 					e.cooldown = e.rate
 				} else {
 					e.cooldown -= delta

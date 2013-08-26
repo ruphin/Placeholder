@@ -109,6 +109,17 @@
 			#undo_button {
 				width: 50px;
 				height: 50px;
+				float: right;
+				margin-left: 10px;
+			}
+
+			.build_button {
+				margin: 5px;
+			}
+
+			span {
+				font-family: Arial;
+			}
 			}
 		</style>
 		<script type"application/javascript" src="vec2.js"></script>
@@ -133,19 +144,20 @@
 			</div>
 		</div>
 		<div id="menu">
-			<input type="button" onclick="play()" id="play_button" value="Play"/>
-			<span>Money</span><span id="money"></span>
-			<span>Kills</span><span id="score"></span>
-			<span>Round</span><span id="round"></span>
+			<input type="button" onclick="play()" id="play_button" value="Play" />
+			<span>&nbsp; &nbsp; Money</span><span id="money"></span>
+			<span>&nbsp; &nbsp; Kills</span><span id="score"></span>
+			<span>&nbsp; &nbsp; Round</span><span id="round"></span>
+			<input type="button" onclick="undo_build()" id="undo_button" value="Undo"/>
 	    	<div id="build_menu">
-	    		<input type="button" onclick="undo_build()" id="undo_button" value="Undo"/>
-	    		<input type="image" src="graphics/OrangeTower.png" id="tower_button" class="build_button" onclick="set_tower_mode()" alt="Tower" Title="Tower"/>
+	    		
+	    		<input type="image" src="graphics/OrangeTower.png" id="tower_button" class="build_button" onclick="set_tower_mode()" alt="Damage" Title="Damage"/>
 
 	    		<input type="image" src="graphics/BlueTower.png" id="harvester_button" class="build_button" onclick="set_harvester_mode()" alt="Harvester" Title="Harvester"/>
 
 	    		<input type="image" src="graphics/YellowTower.png" id="beacon_button" class="build_button" onclick="set_beacon_mode()" alt="Beacon" Title="Beacon"/>
 
-	    		<input type="image" src="graphics/YellowTower.png" id="slower_button" class="build_button" onclick="set_slower_mode()" alt="Slower" Title="Slower"/>
+	    		<!-- <input type="image" src="graphics/GreenTower.png" id="slower_button" class="build_button" onclick="set_slower_mode()" alt="Slower" Title="Slower"/> -->
 	    	</div>
 		</div>
     	<div id="description">
