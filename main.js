@@ -194,7 +194,8 @@ function loop() {
 	if(!build_mode &&
 	   Object.keys(get_entities('tower')).length == 0 &&
 	   Object.keys(get_entities('harvester')).length == 0 &&
-	   Object.keys(get_entities('beacon')).length == 0) {
+	   Object.keys(get_entities('beacon')).length == 0 &&
+	   Object.keys(get_entities('slower')).length == 0) {
 		game_over();
 	} else {
 		if(!build_mode) {
@@ -323,8 +324,32 @@ function handle_input(delta) {
 	vec2_set(mouse.delta, 0, 0);
 }
 
-function build(spawn_function, cost) {
-	if(money >= cost) {
+function set_tower_range(e) {
+	var max_range = e.range;
+
+	on_mouse_draw = function(ctx) {
+		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), max_range), 1.0)
+		highlight_in_range(ctx, 'targettable_by_towers', e, e.position)
+	}
+
+	on_mouse_click = function() {
+		allow_set_tower_range()
+	}
+}
+
+function allow_set_tower_range() {
+	on_mouse_draw = function() {}
+	on_mouse_click = function() {
+		each_entity('tower', function(e) {
+			if(vec2_distance(e.position, mouse.world) < e.size * 0.5) {
+				set_tower_range(e)
+			}
+		});
+	}
+}
+
+function build(spawn_function, proto) {
+	if(money >= proto.cost) {
 		var intersection = false;
 		each_entity('collidable', function(e) {
 			if(vec2_distance(e.position, mouse.world) < 1.0) {
@@ -333,9 +358,11 @@ function build(spawn_function, cost) {
 		});
 
 		if(!intersection) {
-			undo.push(spawn_function(mouse.world));
+			var e = spawn_function(mouse.world);
+
+			undo.push(e);
 			$('#undo_button').removeAttr('disabled');
-			money -= cost;
+			money -= proto.cost;
 		}
 	}
 }
@@ -351,6 +378,9 @@ function intersects(proto, position) {
 }
 
 function draw_cursor(ctx, proto) {
+	ctx.save()
+	ctx.translate(mouse.world.x, mouse.world.y)
+
 	if(!intersects(proto, mouse.world)) {
 		ctx.globalAlpha = 0.5;
 		if(proto.texture) {
@@ -375,32 +405,68 @@ function draw_cursor(ctx, proto) {
 			ctx.globalAlpha = 0.5;
 		ctx.stroke();
 	}
+
+	ctx.restore();
+}
+
+function highlight_in_range(ctx, which, proto, position) {
+	each_entity(which, function(e) {
+		if(vec2_distance(e.position, position) - e.size * 0.5 < proto.range) {
+			ctx.save();
+			ctx.translate(e.position.x, e.position.y);
+
+			ctx.beginPath();
+				ctx.arc(0, 0, e.size / 2, 0, 2 * Math.PI, false);
+				ctx.fillStyle = '#ff0000';
+				ctx.globalAlpha = 0.8;
+			ctx.fill();
+
+			ctx.restore();
+		}
+	});
 }
 
 function set_tower_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, tower_proto)
+		highlight_in_range(ctx, 'targettable_by_towers', tower_proto, mouse.world)
 	}
 	on_mouse_click = function() {
-		build(spawn_tower, tower_proto.cost)
+		build(spawn_tower, tower_proto)
+		allow_set_tower_range()
 	}
 }
 
 function set_harvester_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, harvester_proto)
+		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
 	}
 	on_mouse_click = function() {
-		build(spawn_harvester, harvester_proto.cost)
+		build(spawn_harvester, harvester_proto)
+		allow_set_tower_range()
 	}
 }
 
 function set_beacon_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, beacon_proto)
+		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
 	}
 	on_mouse_click = function() {
-		build(spawn_beacon, beacon_proto.cost)
+		build(spawn_beacon, beacon_proto)
+		allow_set_tower_range()
+	}
+}
+
+function set_slower_mode() {
+	on_mouse_draw = function(ctx) {
+		draw_cursor(ctx, slower_proto)
+		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
+	}
+	on_mouse_click = function() {
+		build(spawn_slower, slower_proto)
+		allow_set_tower_range()
 	}
 }
 
@@ -416,8 +482,8 @@ function update(delta) {
 		var beacon = undefined
 		var min_distance = beacon_proto.range + 1
 		each_entity('beacon', function(b) {
-			beacon_distance = vec2_distance_squared(e.position, b.position) - 5
-			if(beacon_distance < b.range * b.range) {
+			beacon_distance = vec2_distance(e.position, b.position)
+			if(beacon_distance < b.range + e.size / 2) {
 				beacon = b;
 				min_distance = beacon_distance;
 			}
@@ -425,6 +491,14 @@ function update(delta) {
 		if(beacon) {
 			e.target = beacon;
 		}
+
+		// Slow
+		var slow_factor = 1.0
+		each_entity('slower', function(b) {
+			if(vec2_distance(e.position, b.position) + e.size / 2 < b.range) {
+				slow_factor *= b.slow;
+			}
+		});
 
 		// Find target
 		var score = 999999999;
@@ -446,7 +520,7 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.abs(round-10) + 1))
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.abs(round-10) + 1) * slow_factor)
 
 				vec2_add(e.position, t)
 			} else {
@@ -712,10 +786,7 @@ function render(canvas, camera, delta) {
 
 		// Draw mouse cursor
 		if(mouse.over && build_mode && on_mouse_draw) {
-			ctx.save()
-			ctx.translate(mouse.world.x, mouse.world.y)
 			on_mouse_draw(ctx)
-			ctx.restore()
 		}
 	ctx.restore();
 

@@ -73,7 +73,7 @@ var tower_proto = {
 	'rate': 0.05,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 0.11,
+	'damage': 0.14,
 	'range': 2.5,
 	'cost': 10
 }
@@ -91,6 +91,34 @@ function spawn_tower(position) {
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
 
+
+	return e
+}
+
+var slower_proto = {
+	'color': '#00ff00',
+	'texture': towerImage,
+	'size': 1.0,
+	'target': undefined,
+	'health': 10,
+	'slow': 0.7,
+	'maximum_health': 10,
+	'range': 4,
+	'cost': 20
+}
+
+function spawn_slower(position) {
+	var e = create_entity()
+	copy(slower_proto, e)
+
+	e.position = position
+
+	index(e, 'drawable')
+	index(e, 'collidable')
+	index(e, 'slower')
+	index(e, 'health')
+	index(e, 'targettable_by_enemies')
+	index(e, 'targettable_by_towers')
 
 	return e
 }
