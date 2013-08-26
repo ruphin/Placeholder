@@ -334,7 +334,7 @@ function handle_input(delta) {
 function set_tower_range(e) {
 	on_mouse_draw = function(ctx) {
 		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), e.max_range), 1.0)
-		highlight_in_range(ctx, 'targettable_by_towers', e, e.position)
+		highlight_in_this_range(ctx, 'building', e.position, e.range)
 	}
 
 	on_mouse_click = function() {
@@ -414,9 +414,26 @@ function draw_cursor(ctx, proto) {
 	ctx.restore();
 }
 
-function highlight_in_range(ctx, which, proto, position) {
+function highlight_in_range(ctx, which, position) {
 	each_entity(which, function(e) {
-		if(vec2_distance(e.position, position) - e.size * 0.5 < proto.range) {
+		if(vec2_distance(e.position, position) - e.size * 0.5 < e.range) {
+			ctx.save();
+			ctx.translate(e.position.x, e.position.y);
+
+			ctx.beginPath();
+				ctx.arc(0, 0, e.size / 2, 0, 2 * Math.PI, false);
+				ctx.fillStyle = '#ff0000';
+				ctx.globalAlpha = 0.8;
+			ctx.fill();
+
+			ctx.restore();
+		}
+	});
+}
+
+function highlight_in_this_range(ctx, which, position, range) {
+	each_entity(which, function(e) {
+		if(vec2_distance(e.position, position) - e.size * 0.5 < range) {
 			ctx.save();
 			ctx.translate(e.position.x, e.position.y);
 
@@ -434,7 +451,8 @@ function highlight_in_range(ctx, which, proto, position) {
 function set_tower_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, tower_proto)
-		highlight_in_range(ctx, 'targettable_by_towers', tower_proto, mouse.world)
+		highlight_in_range(ctx, 'tower', mouse.world)
+		highlight_in_this_range(ctx, 'building', mouse.world, tower_proto.range)
 	}
 	on_mouse_click = function() {
 		build(spawn_tower, tower_proto)
@@ -445,7 +463,7 @@ function set_tower_mode() {
 function set_harvester_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, harvester_proto)
-		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
+		highlight_in_range(ctx, 'tower', mouse.world)
 	}
 	on_mouse_click = function() {
 		build(spawn_harvester, harvester_proto)
@@ -456,7 +474,7 @@ function set_harvester_mode() {
 function set_beacon_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, beacon_proto)
-		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
+		highlight_in_range(ctx, 'tower', mouse.world)
 	}
 	on_mouse_click = function() {
 		build(spawn_beacon, beacon_proto)
@@ -467,7 +485,7 @@ function set_beacon_mode() {
 function set_slower_mode() {
 	on_mouse_draw = function(ctx) {
 		draw_cursor(ctx, slower_proto)
-		highlight_in_range(ctx, 'tower', tower_proto, mouse.world)
+		highlight_in_range(ctx, 'tower', mouse.world)
 	}
 	on_mouse_click = function() {
 		build(spawn_slower, slower_proto)

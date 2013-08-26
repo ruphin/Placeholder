@@ -92,7 +92,7 @@ function spawn_tower(position) {
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
 	index(e, 'friendly')
-
+	index(e, 'building')
 
 	return e
 }
@@ -122,6 +122,7 @@ function spawn_slower(position) {
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
 	index(e, 'friendly')
+	index(e, 'building')
 
 	return e
 }
@@ -151,6 +152,7 @@ function spawn_harvester(position) {
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
 	index(e, 'friendly')
+	index(e, 'building')
 
 	return e
 }
@@ -178,6 +180,7 @@ function spawn_beacon(position) {
 	index(e, 'targettable_by_enemies')
 	index(e, 'targettable_by_towers')
 	index(e, 'friendly')
+	index(e, 'building')
 
 	return e
 }
@@ -211,6 +214,7 @@ function spawn_portal(position) {
 	index(e, 'portal')
 	index(e, 'health')
 	index(e, 'targettable_by_towers')
+	index(e, 'building')
 
 	return e
 }
