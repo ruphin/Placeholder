@@ -75,7 +75,7 @@ var tower_proto = {
 	'rate': 0.05,
 	'cooldown': 0,
 	'maximum_health': 10,
-	'damage': 0.13,
+	'damage': 0.11,
 	'range': 2.5,
 	'max_range': 2.5,
 	'cost': 10

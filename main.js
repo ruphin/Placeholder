@@ -178,9 +178,9 @@ function loop() {
 			spawn_random_portal()
 			round++;
 
-			each_entity('friendly', function(e) {
-				e.health = e.maximum_health
-			});
+			// each_entity('friendly', function(e) {
+			// 	e.health = e.maximum_health
+			// });
 
 			$('#play_button').val('Play');
 			$('#play_button').removeAttr('disabled');
@@ -286,23 +286,23 @@ function set_tower_range(e) {
 		e.range = Math.max(Math.min(vec2_distance(e.position, mouse.world), e.max_range), 1.0)
 		highlight_in_this_range(ctx, 'building', e.position, e.range)
 
-		if(!mouse.left) {
-			set_tower_range_mode()
-		}
+		// if(!mouse.left) {
+		// 	set_tower_range_mode()
+		// }
 	}
 
-	on_mouse_click = function() {}
+	// on_mouse_click = function() {}
 }
 
 function set_tower_range_mode() {
-	on_mouse_draw = function() {}
-	on_mouse_click = function() {
-		each_entity('tower', function(e) {
-			if(vec2_distance(e.position, mouse.world) < e.size * 0.5) {
-				set_tower_range(e)
-			}
-		});
-	}
+	// on_mouse_draw = function() {}
+	// on_mouse_click = function() {
+	// 	each_entity('tower', function(e) {
+	// 		if(vec2_distance(e.position, mouse.world) < e.size * 0.5) {
+	// 			set_tower_range(e)
+	// 		}
+	// 	});
+	// }
 }
 
 function build(spawn_function, proto) {
@@ -448,12 +448,12 @@ function update(delta) {
 	// Update enemies
 	each_entity('enemy', function(e) {
 		var beacon = undefined
-		var min_distance = beacon_proto.range + 1
+		//var min_distance = beacon_proto.range + 1
 		each_entity('beacon', function(b) {
 			beacon_distance = vec2_distance(e.position, b.position)
-			if(beacon_distance < b.range + e.size * 0.5 && beacon_distance < min_distance) {
+			if(beacon_distance < b.range + e.size * 0.5) { // && beacon_distance < min_distance) {
 				beacon = b;
-				min_distance = beacon_distance;
+				//min_distance = beacon_distance;
 			}
 		});
 		if(beacon) {
@@ -488,13 +488,13 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.04, round) * slow_factor)
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, Math.max(0,round - 10)) * slow_factor)
 
 				vec2_add(e.position, t)
 			} else {
 				// Fire on target
 				if(e.cooldown <= 0) {
-					e.target.health -= e.damage * Math.pow(1.02, round)
+					e.target.health -= e.damage * Math.pow(1.1, round)
 					e.cooldown = e.rate
 				} else {
 					e.cooldown -= delta
