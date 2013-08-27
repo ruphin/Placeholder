@@ -23,30 +23,25 @@
 			   color: white;
 			}
 
+      body > div {
+        width: 800px;
+        position: relative;
+        font-size: 16pt;
+        text-align: normal;
+        margin: auto;
+        margin-top:10px;
+        margin-bottom: 50px;
+      }
+
 			#title {
-				display: block;
-				position: relative;
-				margin: auto;
 				font-size: 32pt;
 				font-weight: bold;
-				width: 800px;
 				height: 80px;
 			}
 
 			#context {
-				display: block;
-				position: relative;
-				margin: auto;
-				width: 800px;
 				height: 600px;
-			}
-
-			#menu {
-				display: block;
-				position: relative;
-				margin: auto;
-				width: 800px;
-				margin-top: 10px;
+        margin-bottom: 0px;
 			}
 
 			#build_menu {
@@ -56,24 +51,7 @@
 			}
 
 			#description {
-				width: 800px;
-				position: relative;
-				font-size: 16pt;
-				text-align: normal;
-				margin: auto;
-				margin-top:10px;
-				margin-bottom: 20px;
 				clear: both;
-			}
-
-			#credits {
-				width: 800px;
-				position: relative;
-				font-size: 16pt;
-				text-align: normal;
-				margin: auto;
-				margin-top:10px;
-				padding-bottom: 50px;
 			}
 
 
@@ -218,9 +196,26 @@
     		</div>
     		<div class='item_box'>
     			<img src="graphics/YellowTower.png"/> <span class='item_title'>Beacon</span> <span class="stats">Health: 1&nbsp; Cost: 20</span><br>
-    			<p>The Things are drawn by Beacons when they are within range. They do not have very much health though! Also, note that newer beacons have a stronger pull on the Things than older beacons!</p>
+    			<p>The Things are drawn by Beacons when they are within range. Things are always attracted to the newest Beacon. Be careful, Beacons do not have much health!</p>
     		</div>
     	</div>
+
+      <div id="strategy">
+        <h3>Strategy</h3>
+        <p>There are two ways to deal with Portals.</p>
+        <p>You can place several Burners in close proximity to a Portal. The Burners will quickly destroy the Portal, but after it is destroyed, the Burners will destroy eachother. This strategy is useful when you have to destroy Portals fast.</p>
+        <img src="graphics/NukeTech.png"><br>
+        <p>You can also use a Beacon to lure Things into Burners. The Portal will not take much damage, allowing you to harvest a lot of Things. The Beacon can be re-used for other Portals as well. This strategy is most efficient, but leaves you vulnerable by leaving the Portals open for longer periods.</p>
+        <img src="graphics/BeaconTech.png">
+      </div>
+
+      <div id="hints">
+        <h3>Hints</h3>
+        <p>Never forget to build at least one Harvester, or you won't be able to collect new energy to build.</p>
+        <p>Killing Portals fast will stop them from spawning many Things, but it can be smart to keep a portal alive so your Harvesters can collect more Energy from the Things.</p>
+        <p>Newer Beacons are more attractive to Things, allowing you to build a chain of Beacons that pull Things along the path.</p>
+      </div>
+
     	<div id="credits">
     		<h3>Credits</h3>
     		<p>Code: Lesley Wevers<br>

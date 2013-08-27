@@ -490,7 +490,7 @@ function update(delta) {
 			if(vec2_length_squared(t) > 1.0) {
 				// Move toward target
 				vec2_normalize(t)
-				vec2_mul(t, delta * e.movement_speed * Math.pow(1.02, round) * slow_factor)
+				vec2_mul(t, delta * e.movement_speed * Math.pow(1.03, Math.max(0,round-10)) * slow_factor)
 
 				vec2_add(e.position, t)
 			} else {
